@@ -45,17 +45,23 @@
       font-family: 'Sarabun', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
       background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
       color: var(--slate-800);
       min-height: 100vh;
       padding: 24px 16px;
       line-height: 1.5;
+      overflow-x: hidden;
     }
 
     .app-wrapper {
       max-width: 1340px;
       margin: 0 auto;
+      width: 100%;
     }
 
     /* Top App Navigation / Header */
@@ -468,6 +474,13 @@
       border-bottom: 1px solid var(--slate-200);
     }
 
+    .quick-tools-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .active-month-badge {
       display: inline-flex;
       align-items: center;
@@ -789,6 +802,412 @@
     .toast.show { opacity: 1; transform: translateY(0); }
 
     /* =========================================================
+       RESPONSIVE DESIGN (Mobile & Tablet Optimizations)
+       ========================================================= */
+    .mobile-table-hint {
+      display: none;
+      align-items: center;
+      gap: 7px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .mobile-fab-save {
+      display: none;
+    }
+
+    /* Tablet and Small Laptops (<= 992px) */
+    @media screen and (max-width: 992px) {
+      .app-header {
+        padding: 16px 20px;
+      }
+      .profile-info-grid {
+        column-gap: 24px;
+        padding: 18px 20px;
+      }
+      .field-caption {
+        width: 140px;
+      }
+      .sheet-paper {
+        padding: 26px 22px 36px 22px;
+      }
+      .sheet-signatures-section {
+        column-gap: 40px;
+        padding: 10px 10px;
+      }
+    }
+
+    /* Mobile & Tablet Devices (<= 768px) */
+    @media screen and (max-width: 768px) {
+      body {
+        padding: 12px 10px 84px 10px; /* Leave space at bottom for floating quick-save button */
+      }
+
+      /* Header */
+      .app-header {
+        padding: 14px 14px;
+        margin-bottom: 14px;
+        border-radius: 14px;
+        gap: 12px;
+      }
+      .brand-group {
+        width: 100%;
+        gap: 10px;
+      }
+      .brand-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        flex-shrink: 0;
+      }
+      .brand-text h1 {
+        font-size: 16px;
+        line-height: 1.3;
+      }
+      .brand-text p {
+        font-size: 11.5px;
+        line-height: 1.4;
+        margin-top: 2px;
+      }
+      .header-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .header-actions .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 9px 8px;
+        font-size: 12.5px;
+      }
+      .header-actions .btn-success {
+        grid-column: 1 / -1;
+        order: -1; /* Place Save button first on mobile */
+        padding: 11px 12px;
+        font-size: 13.5px;
+      }
+
+      /* Month Tabs */
+      .tabs-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        margin-bottom: 16px;
+        gap: 10px;
+      }
+      .tabs-label-text {
+        order: 1;
+      }
+      .tabs-extra-action {
+        order: 2;
+      }
+      .month-tabs-container {
+        order: 3;
+        width: 100%;
+        flex: 0 0 100%;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .month-tab-btn {
+        padding: 7px 12px;
+        font-size: 12.5px;
+      }
+
+      /* Calendar & Remarks Card */
+      .calendar-card {
+        padding: 14px 12px;
+        border-radius: 14px;
+        margin-bottom: 16px;
+      }
+      .calendar-topbar {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .calendar-header-title h2 {
+        font-size: 15.5px;
+      }
+      .cal-table-box {
+        padding: 10px 6px;
+      }
+      .cal-table {
+        border-spacing: 3px;
+      }
+      .cal-table th {
+        font-size: 11px;
+        padding: 4px 1px;
+      }
+      .cal-day-cell {
+        height: 35px;
+        font-size: 12px;
+      }
+      .remarks-side-box {
+        padding: 12px 12px;
+      }
+      .remarks-items-list {
+        max-height: 200px;
+      }
+      .remark-item {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .remark-date-badge {
+        font-size: 11px;
+        padding: 2px 6px;
+      }
+      .remark-text {
+        font-size: 12px;
+      }
+
+      /* Main Sheet Paper */
+      .sheet-paper {
+        padding: 18px 12px 30px 12px;
+        border-radius: 14px;
+      }
+      .document-title {
+        margin-bottom: 18px;
+      }
+      .document-title h2 {
+        font-size: 17px;
+        line-height: 1.35;
+      }
+      .document-title span {
+        font-size: 12px;
+      }
+
+      /* Quick Tools */
+      .quick-tools {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding-bottom: 14px;
+        margin-bottom: 18px;
+      }
+      .active-month-badge {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+        font-size: 12.5px;
+        padding: 7px 10px;
+      }
+      .quick-tools-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+      }
+      .quick-tools-actions .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 9px 8px;
+        font-size: 12px;
+      }
+
+      /* Profile Information Grid (Vertical stacked for readability) */
+      .profile-info-grid {
+        grid-template-columns: 1fr;
+        row-gap: 12px;
+        padding: 14px 12px;
+        margin-bottom: 20px;
+      }
+      .form-field {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+      }
+      .field-caption {
+        width: 100%;
+        font-size: 12.5px;
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+      }
+      .field-caption span {
+        display: inline;
+        font-size: 11px;
+      }
+      .field-line-input {
+        width: 100%;
+        font-size: 14px;
+        padding: 6px 4px;
+      }
+
+      /* Mobile Table Hint */
+      .mobile-table-hint {
+        display: flex;
+      }
+
+      /* Table responsive & Sticky Date Column */
+      .table-responsive {
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 22px;
+        border-radius: 10px;
+      }
+
+      table.timesheet-grid thead th.col-w-day {
+        position: sticky;
+        left: 0;
+        z-index: 4;
+        background: #e2e8f0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.08);
+      }
+
+      table.timesheet-grid td.col-w-day {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        background: #ffffff;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.08);
+      }
+
+      tr.workday-row:hover td.col-w-day {
+        background-color: #f8fafc;
+      }
+
+      tr.weekend-row td.col-w-day {
+        background-color: #f8fafc;
+      }
+
+      tr.holiday-row td.col-w-day {
+        background-color: #fffbeb;
+      }
+
+      .col-w-day { width: 44px; min-width: 44px; }
+      .col-w-time { width: 78px; min-width: 74px; }
+      .col-w-sign { width: 80px; min-width: 76px; }
+      .col-w-ot { width: 74px; min-width: 72px; }
+      .col-w-desc { min-width: 250px; }
+      .col-w-note { width: 95px; min-width: 88px; }
+      .col-w-action { width: 50px; min-width: 48px; }
+
+      .grid-input {
+        font-size: 12.5px;
+        padding: 5px 2px;
+      }
+      .time-input-field {
+        font-size: 13px;
+      }
+      .grid-textarea {
+        font-size: 12.5px;
+        padding: 6px;
+        min-height: 42px;
+      }
+      table.timesheet-grid th {
+        font-size: 11.5px;
+        padding: 6px 3px;
+      }
+      .th-sub {
+        font-size: 10.5px !important;
+      }
+      .th-time-format {
+        font-size: 9.5px;
+      }
+
+      /* Footer Signatures */
+      .sheet-signatures-section {
+        margin-top: 24px;
+        padding: 10px 0;
+        grid-template-columns: 1fr;
+        row-gap: 30px;
+      }
+      .sig-dots-line {
+        max-width: 250px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: clip;
+      }
+      .sig-date-dots {
+        max-width: 170px;
+        overflow: hidden;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: bottom;
+      }
+
+      /* Toast Notification */
+      .toast-container {
+        left: 12px;
+        right: 12px;
+        bottom: 74px; /* above the floating action button */
+      }
+      .toast {
+        width: 100%;
+        justify-content: center;
+        font-size: 13px;
+        padding: 10px 14px;
+      }
+
+      /* Mobile FAB Save Button */
+      .mobile-fab-save {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        position: fixed;
+        bottom: 16px;
+        right: 16px;
+        z-index: 999;
+        background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+        color: #ffffff;
+        border: none;
+        padding: 11px 18px;
+        border-radius: 30px;
+        font-size: 13.5px;
+        font-weight: 700;
+        box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+        cursor: pointer;
+        transition: transform 0.15s;
+      }
+      .mobile-fab-save:active {
+        transform: scale(0.95);
+      }
+    }
+
+    /* Small Screen Phones (<= 480px) */
+    @media screen and (max-width: 480px) {
+      body {
+        padding: 8px 6px 84px 6px;
+      }
+      .sheet-paper {
+        padding: 14px 8px 24px 8px;
+        border-radius: 12px;
+      }
+      .quick-tools-actions {
+        grid-template-columns: 1fr;
+      }
+      .cal-table {
+        border-spacing: 2px;
+      }
+      .cal-day-cell {
+        height: 32px;
+        font-size: 11px;
+      }
+      .cal-table th {
+        font-size: 10.5px;
+        padding: 3px 0;
+      }
+      .header-actions {
+        grid-template-columns: 1fr;
+      }
+      .brand-text h1 {
+        font-size: 15px;
+      }
+      .brand-text p {
+        font-size: 11px;
+      }
+    }
+
+    /* =========================================================
        PRINT OPTIMIZATIONS (Completely removes Browser Header & Footer)
        ========================================================= */
     @page {
@@ -805,7 +1224,7 @@
         print-color-adjust: exact !important;
       }
 
-      .app-header, .tabs-wrapper, .calendar-card, .quick-tools, .col-w-action, .no-print, .toast-container {
+      .app-header, .tabs-wrapper, .calendar-card, .quick-tools, .col-w-action, .no-print, .toast-container, .mobile-fab-save, .mobile-table-hint {
         display: none !important;
       }
 
@@ -840,6 +1259,12 @@
       table.timesheet-grid {
         border-collapse: collapse !important;
         border: 1.5px solid #000 !important;
+      }
+
+      table.timesheet-grid thead th.col-w-day,
+      table.timesheet-grid td.col-w-day {
+        position: static !important;
+        box-shadow: none !important;
       }
 
       table.timesheet-grid th, table.timesheet-grid td {
@@ -948,13 +1373,13 @@
 
     <!-- Month Tabs Navigation Bar -->
     <nav class="tabs-wrapper no-print">
-      <div style="font-size:13px; font-weight:700; color:var(--slate-600); padding-left:4px; display:flex; align-items:center; gap:6px;">
+      <div class="tabs-label-text" style="font-size:13px; font-weight:700; color:var(--slate-600); padding-left:4px; display:flex; align-items:center; gap:6px;">
         📑 แท็บเดือน:
       </div>
       <div class="month-tabs-container" id="monthTabsNav">
         <!-- Rendered by JS -->
       </div>
-      <div style="display:flex; align-items:center; gap:8px;">
+      <div class="tabs-extra-action" style="display:flex; align-items:center; gap:8px;">
         <label title="เลือกดูเดือนอื่นๆ" style="cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; color:var(--primary); background:var(--primary-light); padding:6px 12px; border-radius:8px; border:1px solid #bfdbfe;">
           ➕ เลือกเดือนอื่น
           <input type="month" id="customMonthPicker" style="display:none;" onchange="addCustomMonthTab(this.value)">
@@ -1016,7 +1441,7 @@
           📅 กำลังกรอกข้อมูลของเดือน: -
         </div>
 
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+        <div class="quick-tools-actions">
           <button type="button" class="btn btn-white" onclick="addNewRow('workday')">
             ➕ เพิ่มวันทำงาน
           </button>
@@ -1094,6 +1519,16 @@
         </div>
       </section>
 
+      <!-- Mobile Table Scroll Hint -->
+      <div class="mobile-table-hint no-print">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 16 16 12 12 8"></polyline>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <span>เลื่อนซ้าย-ขวาเพื่อดูและกรอกข้อมูลตาราง (คอลัมน์ "วันที่" ถูกตรึงไว้)</span>
+      </div>
+
       <!-- Timesheet Grid -->
       <div class="table-responsive">
         <table class="timesheet-grid" id="mainGrid">
@@ -1154,6 +1589,16 @@
   </div>
 
   <div class="toast-container" id="toastBox"></div>
+
+  <!-- Floating Save Button for Mobile Devices -->
+  <button type="button" class="mobile-fab-save no-print" onclick="saveActiveMonthData(true)" title="บันทึกข้อมูลเดือนนี้">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+      <polyline points="17 21 17 13 7 13 7 21"></polyline>
+      <polyline points="7 3 7 8 15 8"></polyline>
+    </svg>
+    <span>บันทึก</span>
+  </button>
 
   <script>
     // Thai Official Holidays Database
