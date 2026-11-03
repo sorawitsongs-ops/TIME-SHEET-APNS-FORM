@@ -1,0 +1,1988 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>แบบฟอร์มบันทึกเวลาปฏิบัติงาน (Timesheet)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --primary-ring: rgba(37, 99, 235, 0.25);
+      
+      --slate-50: #f8fafc;
+      --slate-100: #f1f5f9;
+      --slate-200: #e2e8f0;
+      --slate-300: #cbd5e1;
+      --slate-400: #94a3b8;
+      --slate-500: #64748b;
+      --slate-600: #475569;
+      --slate-700: #334155;
+      --slate-800: #1e293b;
+      --slate-900: #0f172a;
+
+      --emerald-500: #10b981;
+      --emerald-50: #ecfdf5;
+      --amber-500: #f59e0b;
+      --amber-50: #fffbeb;
+      --rose-500: #ef4444;
+      --rose-50: #fef2f2;
+      --indigo-50: #eef2ff;
+      --indigo-600: #4f46e5;
+      
+      --card-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.03);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Sarabun', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+      color: var(--slate-800);
+      min-height: 100vh;
+      padding: 24px 16px;
+      line-height: 1.5;
+    }
+
+    .app-wrapper {
+      max-width: 1340px;
+      margin: 0 auto;
+    }
+
+    /* Top App Navigation / Header */
+    .app-header {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 18px 26px;
+      margin-bottom: 18px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .brand-text h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--slate-900);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-text p {
+      font-size: 13px;
+      color: var(--slate-500);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+    }
+
+    .btn-white {
+      background: #ffffff;
+      color: var(--slate-700);
+      border-color: var(--slate-200);
+    }
+    .btn-white:hover {
+      background: var(--slate-50);
+      border-color: var(--slate-300);
+      color: var(--slate-900);
+    }
+
+    .btn-success {
+      background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    }
+    .btn-success:hover {
+      background: linear-gradient(180deg, #059669 0%, #047857 100%);
+    }
+
+    .btn-danger-outline {
+      background: #ffffff;
+      color: var(--rose-500);
+      border-color: #fecdd3;
+    }
+    .btn-danger-outline:hover {
+      background: var(--rose-50);
+      border-color: #fda4af;
+    }
+
+    /* Month Tabs Navigation Bar */
+    .tabs-wrapper {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .month-tabs-container {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 4px 2px;
+      flex: 1;
+    }
+
+    .month-tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--slate-600);
+      background: var(--slate-50);
+      border: 1px solid var(--slate-200);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .month-tab-btn:hover {
+      background: #e2e8f0;
+      color: var(--slate-900);
+    }
+
+    .month-tab-btn.active {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #2563eb;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+
+    .month-tab-btn.is-current {
+      border: 1.5px solid #3b82f6;
+    }
+
+    .tab-badge-now {
+      font-size: 10px;
+      background: #f59e0b;
+      color: #ffffff;
+      padding: 1px 6px;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .month-tab-btn.active .tab-badge-now {
+      background: #ffffff;
+      color: #2563eb;
+    }
+
+    .tab-badge-saved {
+      font-size: 10px;
+      background: rgba(100, 116, 139, 0.15);
+      color: var(--slate-600);
+      padding: 1px 5px;
+      border-radius: 8px;
+    }
+
+    .month-tab-btn.active .tab-badge-saved {
+      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    /* Clean Calendar & Remarks Section Card */
+    .calendar-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 22px 26px;
+      margin-bottom: 22px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .calendar-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .calendar-header-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .calendar-header-title h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .calendar-header-title span {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 12.5px;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 20px;
+    }
+
+    .cal-grid-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .cal-grid-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cal-table-box {
+      background: var(--slate-50);
+      border-radius: 12px;
+      padding: 16px 18px;
+      border: 1px solid var(--slate-200);
+    }
+
+    .cal-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 5px;
+      text-align: center;
+    }
+
+    .cal-table th {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--slate-500);
+      padding: 6px 2px;
+    }
+
+    .cal-table th.col-sun { color: var(--rose-500); }
+    .cal-table th.col-sat { color: var(--indigo-600); }
+
+    .cal-day-cell {
+      height: 40px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid var(--slate-200);
+      vertical-align: middle;
+      font-size: 13.5px;
+      font-weight: 600;
+      position: relative;
+      cursor: default;
+      transition: all 0.15s;
+    }
+
+    .cal-day-cell.empty {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .cal-day-cell.sat {
+      background: var(--indigo-50);
+      color: var(--indigo-600);
+      border-color: #c7d2fe;
+    }
+
+    .cal-day-cell.sun {
+      background: var(--rose-50);
+      color: var(--rose-500);
+      border-color: #fecdd3;
+    }
+
+    .cal-day-cell.holiday {
+      background: var(--amber-50);
+      color: #b45309;
+      border-color: #f59e0b;
+      font-weight: 700;
+      box-shadow: inset 0 0 0 1.5px #f59e0b;
+    }
+
+    .cal-day-cell.today-cell {
+      box-shadow: 0 0 0 2px #2563eb;
+    }
+
+    .cal-day-cell .holiday-indicator {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+
+    /* Remarks Side Panel */
+    .remarks-side-box {
+      background: var(--slate-50);
+      border-radius: 12px;
+      padding: 16px 20px;
+      border: 1px solid var(--slate-200);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .remarks-box-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .remarks-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      max-height: 250px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .remark-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--slate-200);
+      border-left: 3.5px solid #f59e0b;
+    }
+
+    .remark-item.weekend-summary {
+      border-left-color: #6366f1;
+    }
+
+    .remark-date-badge {
+      background: var(--amber-50);
+      color: #b45309;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+
+    .remark-date-badge.weekend-badge {
+      background: var(--indigo-50);
+      color: #4f46e5;
+    }
+
+    .remark-text {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-800);
+    }
+
+    /* Main Timesheet Paper Container */
+    .sheet-paper {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 34px 38px 48px 38px;
+      box-shadow: var(--card-shadow);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      position: relative;
+    }
+
+    .quick-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .active-month-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-weight: 700;
+      border: 1px solid #bfdbfe;
+    }
+
+    /* Official Header Form */
+    .document-title {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .document-title h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--slate-900);
+      letter-spacing: -0.01em;
+    }
+
+    .document-title span {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--slate-500);
+      margin-top: 2px;
+    }
+
+    .profile-info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 48px;
+      row-gap: 18px;
+      background: var(--slate-50);
+      border-radius: 12px;
+      padding: 22px 26px;
+      border: 1px solid var(--slate-200);
+      margin-bottom: 28px;
+    }
+
+    .form-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .field-caption {
+      width: 170px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-700);
+      line-height: 1.3;
+      flex-shrink: 0;
+    }
+
+    .field-caption span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--slate-400);
+    }
+
+    .field-line-input {
+      flex: 1;
+      border: none;
+      border-bottom: 2px solid var(--slate-300);
+      background: transparent;
+      padding: 6px 10px;
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--slate-900);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .field-line-input:focus {
+      border-bottom-color: var(--primary);
+      background: #ffffff;
+      border-radius: 6px 6px 0 0;
+    }
+
+    /* Table Styling */
+    .table-responsive {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1.5px solid var(--slate-700);
+      margin-bottom: 30px;
+    }
+
+    table.timesheet-grid {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: #ffffff;
+    }
+
+    table.timesheet-grid th,
+    table.timesheet-grid td {
+      border: 1px solid var(--slate-400);
+      padding: 6px 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    table.timesheet-grid thead th {
+      background: #e2e8f0;
+      color: var(--slate-800);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      padding: 8px 6px;
+    }
+
+    .th-sub {
+      background: #edf2f7 !important;
+      font-size: 11.5px;
+    }
+
+    .th-time-format {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--slate-500);
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* Specific Columns */
+    .col-w-day { width: 50px; font-weight: 700; }
+    .col-w-time { width: 90px; min-width: 85px; }
+    .col-w-sign { width: 90px; }
+    .col-w-ot { width: 85px; }
+    .col-w-desc { text-align: left !important; min-width: 340px; padding: 6px 10px !important; }
+    .col-w-note { width: 110px; }
+    .col-w-action { width: 60px; }
+
+    /* Input Cells (Screen View) */
+    .grid-input {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px;
+      border-radius: 6px;
+      outline: none;
+      transition: all 0.15s;
+    }
+
+    .grid-input:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-ring);
+    }
+
+    /* Time inputs specific styling with clean (hh):(mm) guidance */
+    .time-input-field {
+      letter-spacing: 0.5px;
+      font-family: 'Plus Jakarta Sans', monospace;
+      font-weight: 600;
+    }
+
+    .grid-textarea {
+      width: 100%;
+      border: 1px solid transparent;
+      background: transparent;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--slate-800);
+      padding: 6px 8px;
+      border-radius: 6px;
+      outline: none;
+      resize: vertical;
+      min-height: 48px;
+      font-family: inherit;
+      white-space: pre-wrap;
+      transition: all 0.15s;
+    }
+
+    .grid-textarea:focus {
+      background: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary-ring);
+    }
+
+    .print-only-val {
+      display: none;
+    }
+
+    /* Row Variants - Clean without emojis */
+    tr.workday-row:hover { background-color: #f8fafc; }
+    tr.weekend-row { background-color: #f8fafc; }
+    tr.holiday-row { background-color: #fffbeb; }
+
+    tr.weekend-row td.merged-content {
+      font-weight: 600;
+      color: var(--slate-700);
+      letter-spacing: 1px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    tr.holiday-row td.merged-content {
+      font-weight: 700;
+      color: #b45309;
+      letter-spacing: 0.5px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .btn-cell-del {
+      background: none;
+      border: none;
+      color: var(--slate-400);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .btn-cell-del:hover {
+      color: var(--rose-500);
+      background: var(--rose-50);
+    }
+
+    /* =========================================================
+       FOOTER SIGNATURE SECTION (Matching user's image exactly)
+       ========================================================= */
+    .sheet-signatures-section {
+      margin-top: 36px;
+      padding: 10px 30px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 80px;
+      page-break-inside: avoid;
+    }
+
+    .signature-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      line-height: 1.9;
+    }
+
+    .sig-dots-line {
+      font-size: 14px;
+      color: #475569;
+      letter-spacing: 1.5px;
+      margin-bottom: 2px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .sig-name-wrap {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--slate-900);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-height: 26px;
+    }
+
+    .sig-role-text {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--slate-700);
+    }
+
+    .sig-date-line {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--slate-800);
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .sig-date-dots {
+      letter-spacing: 1.5px;
+      color: #475569;
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: var(--slate-900);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* =========================================================
+       PRINT OPTIMIZATIONS (Completely removes Browser Header & Footer)
+       ========================================================= */
+    @page {
+      size: A4 portrait;
+      margin: 0 !important; /* Zero margin removes browser header (date, title) & footer (URL, 1/3) */
+    }
+
+    @media print {
+      html, body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .app-header, .tabs-wrapper, .calendar-card, .quick-tools, .col-w-action, .no-print, .toast-container {
+        display: none !important;
+      }
+
+      .sheet-paper {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 12mm 10mm !important; /* Safe printable margin inside page without triggering browser headers */
+        margin: 0 auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .profile-info-grid {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin-bottom: 18px !important;
+      }
+
+      .field-line-input {
+        border-bottom: 1.5px solid #000 !important;
+        color: #000 !important;
+      }
+
+      .table-responsive {
+        border: 1.5px solid #000 !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        margin-bottom: 24px !important;
+      }
+
+      table.timesheet-grid {
+        border-collapse: collapse !important;
+        border: 1.5px solid #000 !important;
+      }
+
+      table.timesheet-grid th, table.timesheet-grid td {
+        border: 1px solid #000 !important;
+        color: #000 !important;
+        padding: 5px 6px !important;
+      }
+
+      table.timesheet-grid thead th {
+        background-color: #f1f5f9 !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+
+      .grid-input,
+      .grid-textarea {
+        display: none !important;
+      }
+
+      .print-only-val {
+        display: block !important;
+        width: 100% !important;
+        text-align: center !important;
+        font-size: 13px !important;
+        line-height: 1.4 !important;
+        color: #000 !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+      }
+
+      .print-only-desc {
+        text-align: left !important;
+        padding: 2px 4px !important;
+      }
+
+      tr.weekend-row {
+        background-color: #f8fafc !important;
+      }
+
+      tr.holiday-row {
+        background-color: #fefce8 !important;
+      }
+
+      .sheet-signatures-section {
+        margin-top: 28px !important;
+        padding: 0 20px !important;
+        page-break-inside: avoid !important;
+      }
+
+      .sig-dots-line, .sig-date-dots {
+        color: #000 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-wrapper">
+
+    <!-- Top App Navigation / Header -->
+    <header class="app-header no-print">
+      <div class="brand-group">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+            <path d="M8 14h.01"></path>
+            <path d="M12 14h.01"></path>
+            <path d="M16 14h.01"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>ระบบบันทึกเวลาทำงาน (Timesheet Pro)</h1>
+          <p>ระบบแยกแท็บรายเดือน • ปฏิทินวันหยุดราชการไทย • ลายเซ็นต์ท้ายเอกสาร • ส่งออก Excel</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button type="button" class="btn btn-white" onclick="exportToExcel()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Export Excel
+        </button>
+        <button type="button" class="btn btn-white" onclick="triggerPrint()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          พิมพ์ / PDF
+        </button>
+        <button type="button" class="btn btn-success" onclick="saveActiveMonthData(true)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+            <polyline points="7 3 7 8 15 8"></polyline>
+          </svg>
+          บันทึกข้อมูลเดือนนี้
+        </button>
+      </div>
+    </header>
+
+    <!-- Month Tabs Navigation Bar -->
+    <nav class="tabs-wrapper no-print">
+      <div style="font-size:13px; font-weight:700; color:var(--slate-600); padding-left:4px; display:flex; align-items:center; gap:6px;">
+        📑 แท็บเดือน:
+      </div>
+      <div class="month-tabs-container" id="monthTabsNav">
+        <!-- Rendered by JS -->
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <label title="เลือกดูเดือนอื่นๆ" style="cursor:pointer; display:flex; align-items:center; gap:5px; font-size:13px; font-weight:600; color:var(--primary); background:var(--primary-light); padding:6px 12px; border-radius:8px; border:1px solid #bfdbfe;">
+          ➕ เลือกเดือนอื่น
+          <input type="month" id="customMonthPicker" style="display:none;" onchange="addCustomMonthTab(this.value)">
+        </label>
+      </div>
+    </nav>
+
+    <!-- Clean Calendar & Side Remarks Section Card -->
+    <section class="calendar-card no-print">
+      <div class="calendar-topbar">
+        <div class="calendar-header-title">
+          <h2>📅 ปฏิทินวันทำงาน</h2>
+          <span id="calMonthLabel">-</span>
+        </div>
+        <div style="font-size:12.5px; color:var(--slate-500);">
+          💡 ปฏิทินแสดงตัวเลขสะอาดตา และแสดงรายการวันหยุดไว้ในแถบ Remark ด้านขวา
+        </div>
+      </div>
+
+      <div class="cal-grid-wrapper">
+        <!-- Left: Clean Calendar Grid (Numbers only) -->
+        <div class="cal-table-box">
+          <table class="cal-table">
+            <thead>
+              <tr>
+                <th class="col-sun">อา.</th>
+                <th>จ.</th>
+                <th>อ.</th>
+                <th>พ.</th>
+                <th>พฤ.</th>
+                <th class="col-sat">ศ.</th>
+                <th class="col-sat">ส.</th>
+              </tr>
+            </thead>
+            <tbody id="calGridTbody">
+              <!-- Days rendered here -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Right: Dedicated Holiday & Weekend Remarks Panel -->
+        <div class="remarks-side-box">
+          <div class="remarks-box-title">
+            <span>📌</span> วันหยุด & หมายเหตุประจำเดือน (Remarks):
+          </div>
+          <div class="remarks-items-list" id="monthRemarksList">
+            <!-- Holidays and weekend summary rendered here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Timesheet Paper Container -->
+    <main class="sheet-paper">
+
+      <!-- Action Toolbar -->
+      <div class="quick-tools no-print">
+        <div class="active-month-badge" id="activeMonthBadge">
+          📅 กำลังกรอกข้อมูลของเดือน: -
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-white" onclick="addNewRow('workday')">
+            ➕ เพิ่มวันทำงาน
+          </button>
+          <button type="button" class="btn btn-white" onclick="addNewRow('holiday')">
+            ➕ เพิ่มวันหยุดพิเศษ
+          </button>
+          <button type="button" class="btn btn-white" onclick="fillNormalWorkHours()" title="เติมเวลาทำงาน 08:30 - 17:30 ทุกวันทำงานพร้อมกัน">
+            🕒 เติมเวลา 08:30 - 17:30
+          </button>
+          <button type="button" class="btn btn-danger-outline" onclick="resetActiveMonthRows()">
+            🗑️ ล้างตารางเดือนนี้
+          </button>
+        </div>
+      </div>
+
+      <!-- Official Header Form -->
+      <div class="document-title">
+        <h2>แบบฟอร์มบันทึกเวลาปฏิบัติงาน (Timesheet)</h2>
+        <span>ใบลงเวลาปฏิบัติงานของพนักงาน ประจำงวดรายเดือน</span>
+      </div>
+
+      <section class="profile-info-grid">
+        <!-- Left: Name -->
+        <div class="form-field">
+          <div class="field-caption">
+            ชื่อ-สกุล :
+            <span>Name-Surname</span>
+          </div>
+          <input type="text" id="nameInput" class="field-line-input" value="นายสรวิศ ทรงสมรรถภาพ" oninput="syncEmployeeName(this.value)" onchange="saveProfile()">
+        </div>
+
+        <!-- Right: Month/Year -->
+        <div class="form-field">
+          <div class="field-caption">
+            ประจำเดือน/ปี :
+            <span>Month/Year</span>
+          </div>
+          <input type="text" id="monthYearInput" class="field-line-input" value="" onchange="updateActiveMonthYearText(this.value)">
+        </div>
+
+        <!-- Left: Customer Site -->
+        <div class="form-field">
+          <div class="field-caption">
+            หน่วยงาน/สังกัด :
+            <span>Costumer site</span>
+          </div>
+          <input type="text" id="siteInput" class="field-line-input" value="GULF" onchange="saveProfile()">
+        </div>
+
+        <!-- Right: Position -->
+        <div class="form-field">
+          <div class="field-caption">
+            ตำแหน่ง :
+            <span>Position</span>
+          </div>
+          <input type="text" id="positionInput" class="field-line-input" value="Quality Assurance" onchange="saveProfile()">
+        </div>
+
+        <!-- Left: Department -->
+        <div class="form-field">
+          <div class="field-caption">
+            แผนก :
+            <span>Department</span>
+          </div>
+          <input type="text" id="departmentInput" class="field-line-input" value="Information Technologies" onchange="saveProfile()">
+        </div>
+
+        <!-- Right: Employee ID -->
+        <div class="form-field">
+          <div class="field-caption">
+            รหัสพนักงาน :
+            <span>Employee ID</span>
+          </div>
+          <input type="text" id="employeeIdInput" class="field-line-input" value="APNSC0368" onchange="saveProfile()">
+        </div>
+      </section>
+
+      <!-- Timesheet Grid -->
+      <div class="table-responsive">
+        <table class="timesheet-grid" id="mainGrid">
+          <thead>
+            <tr>
+              <th rowspan="2" class="col-w-day">วันที่</th>
+              <th rowspan="2" class="col-w-time">เข้า<span class="th-time-format">(hh) : (mm)</span></th>
+              <th rowspan="2" class="col-w-time">ออก<span class="th-time-format">(hh) : (mm)</span></th>
+              <th rowspan="2" class="col-w-sign">ลายเซ็นต์<br>หัวหน้างาน</th>
+              <th colspan="2" class="col-w-ot">O.T</th>
+              <th rowspan="2" class="col-w-sign">หัวหน้า<br>อนุมัติ</th>
+              <th rowspan="2" class="col-w-desc">รายละเอียดงาน</th>
+              <th rowspan="2" class="col-w-note">หมายเหตุ</th>
+              <th rowspan="2" class="col-w-action no-print">จัดการ</th>
+            </tr>
+            <tr>
+              <th class="th-sub col-w-ot">เริ่มงาน<span class="th-time-format">(hh):(mm)</span></th>
+              <th class="th-sub col-w-ot">ออกเวลา<span class="th-time-format">(hh):(mm)</span></th>
+            </tr>
+          </thead>
+          <tbody id="gridTbody">
+            <!-- Dynamic rows rendered here -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Signature Footer Block (Matching uploaded image) -->
+      <footer class="sheet-signatures-section">
+        <!-- Left: Employee Signature -->
+        <div class="signature-block">
+          <div class="sig-dots-line">...................................................</div>
+          <div class="sig-name-wrap">
+            (&nbsp;<span id="footerEmployeeName">นายสรวิศ ทรงสมรรถภาพ</span>&nbsp;)
+          </div>
+          <div class="sig-role-text">พนักงาน</div>
+          <div class="sig-date-line">
+            <span>วันที่ :</span>
+            <span class="sig-date-dots">............................................</span>
+          </div>
+        </div>
+
+        <!-- Right: Manager / Supervisor Signature -->
+        <div class="signature-block">
+          <div class="sig-dots-line">...................................................</div>
+          <div class="sig-name-wrap">
+            (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+          </div>
+          <div class="sig-role-text">ผู้จัดการ/หัวหน้างาน</div>
+          <div class="sig-date-line">
+            <span>วันที่ :</span>
+            <span class="sig-date-dots">............................................</span>
+          </div>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <div class="toast-container" id="toastBox"></div>
+
+  <script>
+    // Thai Official Holidays Database
+    const THAI_HOLIDAYS = {
+      // 2025 (2568)
+      "2025-01-01": "วันขึ้นปีใหม่",
+      "2025-02-12": "วันมาฆบูชา",
+      "2025-04-06": "วันจักรี",
+      "2025-04-07": "วันหยุดชดเชยวันจักรี",
+      "2025-04-13": "วันสงกรานต์",
+      "2025-04-14": "วันสงกรานต์",
+      "2025-04-15": "วันสงกรานต์",
+      "2025-04-16": "วันหยุดชดเชยวันสงกรานต์",
+      "2025-05-01": "วันแรงงานแห่งชาติ",
+      "2025-05-04": "วันฉัตรมงคล",
+      "2025-05-05": "วันหยุดชดเชยวันฉัตรมงคล",
+      "2025-05-11": "วันวิสาขบูชา",
+      "2025-05-12": "วันหยุดชดเชยวันวิสาขบูชา",
+      "2025-06-03": "วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินี",
+      "2025-07-10": "วันอาสาฬหบูชา",
+      "2025-07-11": "วันเข้าพรรษา",
+      "2025-07-28": "วันเฉลิมพระชนมพรรษา พระบาทสมเด็จพระเจ้าอยู่หัว",
+      "2025-08-12": "วันแม่แห่งชาติ",
+      "2025-10-13": "วันนวมินทรมหาราช",
+      "2025-10-23": "วันปิยมหาราช",
+      "2025-12-05": "วันพ่อแห่งชาติ",
+      "2025-12-10": "วันรัฐธรรมนูญ",
+      "2025-12-31": "วันสิ้นปี",
+
+      // 2026 (2569)
+      "2026-01-01": "วันขึ้นปีใหม่",
+      "2026-01-02": "วันหยุดพิเศษเทศกาลปีใหม่",
+      "2026-03-03": "วันมาฆบูชา",
+      "2026-04-06": "วันจักรี",
+      "2026-04-13": "วันสงกรานต์",
+      "2026-04-14": "วันสงกรานต์",
+      "2026-04-15": "วันสงกรานต์",
+      "2026-05-01": "วันแรงงานแห่งชาติ",
+      "2026-05-04": "วันฉัตรมงคล",
+      "2026-05-31": "วันวิสาขบูชา",
+      "2026-06-01": "วันหยุดชดเชยวันวิสาขบูชา",
+      "2026-06-03": "วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินี",
+      "2026-07-28": "วันเฉลิมพระชนมพรรษา พระบาทสมเด็จพระเจ้าอยู่หัว",
+      "2026-07-29": "วันอาสาฬหบูชา",
+      "2026-07-30": "วันเข้าพรรษา",
+      "2026-08-12": "วันแม่แห่งชาติ",
+      "2026-10-13": "วันนวมินทรมหาราช",
+      "2026-10-23": "วันปิยมหาราช",
+      "2026-12-05": "วันพ่อแห่งชาติ",
+      "2026-12-07": "วันหยุดชดเชยวันพ่อแห่งชาติ",
+      "2026-12-10": "วันรัฐธรรมนูญ",
+      "2026-12-31": "วันสิ้นปี",
+
+      // 2027 (2570)
+      "2027-01-01": "วันขึ้นปีใหม่",
+      "2027-02-21": "วันมาฆบูชา",
+      "2027-04-06": "วันจักรี",
+      "2027-04-13": "วันสงกรานต์",
+      "2027-04-14": "วันสงกรานต์",
+      "2027-04-15": "วันสงกรานต์",
+      "2027-05-01": "วันแรงงานแห่งชาติ",
+      "2027-05-04": "วันฉัตรมงคล",
+      "2027-05-20": "วันวิสาขบูชา",
+      "2027-06-03": "วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินี",
+      "2027-07-28": "วันเฉลิมพระชนมพรรษา พระบาทสมเด็จพระเจ้าอยู่หัว",
+      "2027-08-12": "วันแม่แห่งชาติ",
+      "2027-10-13": "วันนวมินทรมหาราช",
+      "2027-10-23": "วันปิยมหาราช",
+      "2027-12-05": "วันพ่อแห่งชาติ",
+      "2027-12-06": "วันหยุดชดเชยวันพ่อแห่งชาติ",
+      "2027-12-10": "วันรัฐธรรมนูญ",
+      "2027-12-31": "วันสิ้นปี"
+    };
+
+    const thaiMonthNamesFull = [
+      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+    ];
+    const thaiMonthNamesShort = [
+      "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+      "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+    ];
+
+    const now = new Date();
+    const currentActualYear = now.getFullYear();
+    const currentActualMonth = now.getMonth();
+    const currentActualMonthKey = `${currentActualYear}-${String(currentActualMonth + 1).padStart(2, '0')}`;
+
+    let tabMonths = [];
+
+    function buildDefaultTabMonths() {
+      tabMonths = [];
+      for (let offset = -1; offset <= 6; offset++) {
+        let d = new Date(currentActualYear, currentActualMonth + offset, 1);
+        let y = d.getFullYear();
+        let m = d.getMonth();
+        let key = `${y}-${String(m + 1).padStart(2, '0')}`;
+        let beYearShort = (y + 543).toString().slice(-2);
+        let isNow = (y === currentActualYear && m === currentActualMonth);
+
+        tabMonths.push({
+          key: key,
+          year: y,
+          month: m,
+          label: `${thaiMonthNamesShort[m]} ${beYearShort}`,
+          isCurrent: isNow
+        });
+      }
+    }
+
+    let currentActiveTabKey = currentActualMonthKey;
+    let activeRows = [];
+
+    const MASTER_STORAGE_KEY = 'TIMESHEET_MULTI_MONTH_STORE_V4';
+
+    function getStore() {
+      const raw = localStorage.getItem(MASTER_STORAGE_KEY);
+      if (raw) {
+        try {
+          return JSON.parse(raw);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      return {
+        profile: {
+          name: "นายสรวิศ ทรงสมรรถภาพ",
+          site: "GULF",
+          position: "Quality Assurance",
+          department: "Information Technologies",
+          employeeId: "APNSC0368"
+        },
+        months: {}
+      };
+    }
+
+    function saveStore(store) {
+      localStorage.setItem(MASTER_STORAGE_KEY, JSON.stringify(store));
+    }
+
+    function syncEmployeeName(name) {
+      document.getElementById('footerEmployeeName').innerText = name || "........................................";
+    }
+
+    function saveProfile() {
+      const store = getStore();
+      const name = document.getElementById('nameInput').value;
+      store.profile = {
+        name: name,
+        site: document.getElementById('siteInput').value,
+        position: document.getElementById('positionInput').value,
+        department: document.getElementById('departmentInput').value,
+        employeeId: document.getElementById('employeeIdInput').value
+      };
+      syncEmployeeName(name);
+      saveStore(store);
+    }
+
+    function updateActiveMonthYearText(val) {
+      const store = getStore();
+      if (!store.months[currentActiveTabKey]) {
+        store.months[currentActiveTabKey] = {};
+      }
+      store.months[currentActiveTabKey].monthYearText = val;
+      saveStore(store);
+      document.getElementById('activeMonthBadge').innerText = `📅 กำลังกรอกข้อมูลของเดือน: ${val}`;
+    }
+
+    function saveActiveMonthData(showToastAlert = false) {
+      saveProfile();
+      const store = getStore();
+      const tabObj = tabMonths.find(t => t.key === currentActiveTabKey);
+      
+      store.months[currentActiveTabKey] = {
+        monthYearText: document.getElementById('monthYearInput').value,
+        rows: activeRows
+      };
+      saveStore(store);
+
+      renderMonthTabs();
+
+      if (showToastAlert) {
+        showToast(`💾 บันทึกข้อมูลของเดือน ${tabObj ? tabObj.label : ''} สำเร็จ!`);
+      }
+    }
+
+    function renderMonthTabs() {
+      const nav = document.getElementById('monthTabsNav');
+      nav.innerHTML = '';
+
+      const store = getStore();
+
+      tabMonths.forEach(t => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = `month-tab-btn ${t.key === currentActiveTabKey ? 'active' : ''} ${t.isCurrent ? 'is-current' : ''}`;
+        
+        const hasSaved = store.months[t.key] && store.months[t.key].rows && store.months[t.key].rows.length > 0;
+        
+        btn.innerHTML = `
+          <span>📅 ${t.label}</span>
+          ${t.isCurrent ? `<span class="tab-badge-now">เดือนนี้</span>` : ''}
+          ${hasSaved ? `<span class="tab-badge-saved">มีข้อมูล</span>` : ''}
+        `;
+
+        btn.onclick = () => switchTab(t.key);
+        nav.appendChild(btn);
+      });
+    }
+
+    function switchTab(newKey) {
+      if (newKey === currentActiveTabKey) return;
+
+      saveActiveMonthData(false);
+      currentActiveTabKey = newKey;
+      renderMonthTabs();
+      loadActiveMonthData();
+      
+      const tabObj = tabMonths.find(t => t.key === newKey);
+      showToast(`สลับไปแท็บเดือน ${tabObj ? tabObj.label : ''}`);
+    }
+
+    function addCustomMonthTab(val) {
+      if (!val) return;
+      const [yStr, mStr] = val.split('-');
+      const y = parseInt(yStr);
+      const m = parseInt(mStr) - 1;
+      const key = `${y}-${String(m + 1).padStart(2, '0')}`;
+      const beYearShort = (y + 543).toString().slice(-2);
+      const isNow = (y === currentActualYear && m === currentActualMonth);
+
+      let existing = tabMonths.find(t => t.key === key);
+      if (!existing) {
+        tabMonths.push({
+          key: key,
+          year: y,
+          month: m,
+          label: `${thaiMonthNamesShort[m]} ${beYearShort}`,
+          isCurrent: isNow
+        });
+        tabMonths.sort((a, b) => a.key.localeCompare(b.key));
+      }
+
+      switchTab(key);
+    }
+
+    function loadActiveMonthData() {
+      const store = getStore();
+      let tabObj = tabMonths.find(t => t.key === currentActiveTabKey);
+
+      if (!tabObj) {
+        const [yStr, mStr] = currentActiveTabKey.split('-');
+        const y = parseInt(yStr);
+        const m = parseInt(mStr) - 1;
+        const beYearShort = (y + 543).toString().slice(-2);
+        tabObj = {
+          key: currentActiveTabKey,
+          year: y,
+          month: m,
+          label: `${thaiMonthNamesShort[m]} ${beYearShort}`,
+          isCurrent: (y === currentActualYear && m === currentActualMonth)
+        };
+        tabMonths.push(tabObj);
+        tabMonths.sort((a, b) => a.key.localeCompare(b.key));
+        renderMonthTabs();
+      }
+
+      const empName = store.profile.name || "นายสรวิศ ทรงสมรรถภาพ";
+      document.getElementById('nameInput').value = empName;
+      syncEmployeeName(empName);
+
+      document.getElementById('siteInput').value = store.profile.site || "GULF";
+      document.getElementById('positionInput').value = store.profile.position || "Quality Assurance";
+      document.getElementById('departmentInput').value = store.profile.department || "Information Technologies";
+      document.getElementById('employeeIdInput').value = store.profile.employeeId || "APNSC0368";
+
+      const beYearShort = (tabObj.year + 543).toString().slice(-2);
+      const defaultMonthYearText = `${thaiMonthNamesShort[tabObj.month]}-${beYearShort}`;
+      const savedMonth = store.months[currentActiveTabKey];
+
+      const activeText = (savedMonth && savedMonth.monthYearText) ? savedMonth.monthYearText : defaultMonthYearText;
+      document.getElementById('monthYearInput').value = activeText;
+      document.getElementById('activeMonthBadge').innerText = `📅 กำลังกรอกข้อมูลของเดือน: ${activeText}`;
+
+      if (savedMonth && savedMonth.rows && savedMonth.rows.length > 0) {
+        activeRows = savedMonth.rows;
+      } else {
+        activeRows = generateDefaultRowsForMonth(tabObj.year, tabObj.month);
+      }
+
+      renderCalendarAndRemarks(tabObj.year, tabObj.month);
+      renderGrid();
+    }
+
+    function generateDefaultRowsForMonth(year, month) {
+      const totalDays = new Date(year, month + 1, 0).getDate();
+      const rows = [];
+
+      for (let d = 1; d <= totalDays; d++) {
+        const dateObj = new Date(year, month, d);
+        const dayOfWeek = dateObj.getDay();
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const holidayName = THAI_HOLIDAYS[dateStr];
+
+        if (holidayName) {
+          rows.push({ day: d, type: 'holiday', mergedText: holidayName });
+        } else if (dayOfWeek === 6) {
+          rows.push({ day: d, type: 'weekend', mergedText: 'เสาร์' });
+        } else if (dayOfWeek === 0) {
+          rows.push({ day: d, type: 'weekend', mergedText: 'อาทิตย์' });
+        } else {
+          rows.push({
+            day: d,
+            timeIn: "",
+            timeOut: "",
+            signHead: "",
+            otStart: "",
+            otEnd: "",
+            signOtApprove: "",
+            description: "",
+            remarks: "",
+            type: "workday"
+          });
+        }
+      }
+
+      return rows;
+    }
+
+    function renderCalendarAndRemarks(year, month) {
+      const beYear = year + 543;
+      document.getElementById('calMonthLabel').innerText = `${thaiMonthNamesFull[month]} ${beYear}`;
+
+      const tbody = document.getElementById('calGridTbody');
+      tbody.innerHTML = '';
+
+      const firstDayOfWeek = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      let currentDay = 1;
+      let monthHolidays = [];
+      let totalSaturdays = 0;
+      let totalSundays = 0;
+
+      for (let week = 0; week < 6; week++) {
+        const tr = document.createElement('tr');
+        let hasDay = false;
+
+        for (let d = 0; d < 7; d++) {
+          const td = document.createElement('td');
+
+          if ((week === 0 && d < firstDayOfWeek) || currentDay > totalDays) {
+            td.className = 'cal-day-cell empty';
+          } else {
+            hasDay = true;
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(currentDay).padStart(2, '0')}`;
+            const holidayName = THAI_HOLIDAYS[dateStr];
+            const isToday = (year === currentActualYear && month === currentActualMonth && currentDay === now.getDate());
+
+            let cellClass = 'cal-day-cell';
+            if (isToday) cellClass += ' today-cell';
+
+            if (holidayName) {
+              cellClass += ' holiday';
+              monthHolidays.push({ day: currentDay, name: holidayName });
+            } else if (d === 0) {
+              cellClass += ' sun';
+              totalSundays++;
+            } else if (d === 6) {
+              cellClass += ' sat';
+              totalSaturdays++;
+            }
+
+            td.className = cellClass;
+            td.innerHTML = `
+              <span>${currentDay}</span>
+              ${holidayName ? '<span class="holiday-indicator"></span>' : ''}
+            `;
+            td.title = holidayName ? `${currentDay} ${thaiMonthNamesShort[month]}: ${holidayName}` : (isToday ? `วันนี้ (วันที่ ${currentDay})` : `${currentDay}`);
+            currentDay++;
+          }
+          tr.appendChild(td);
+        }
+
+        if (hasDay) tbody.appendChild(tr);
+      }
+
+      const remarksList = document.getElementById('monthRemarksList');
+      remarksList.innerHTML = '';
+
+      const weekendItem = document.createElement('div');
+      weekendItem.className = 'remark-item weekend-summary';
+      weekendItem.innerHTML = `
+        <span class="remark-date-badge weekend-badge">เสาร์-อาทิตย์</span>
+        <span class="remark-text">วันหยุดประจำสัปดาห์ทั้งหมด ${totalSaturdays + totalSundays} วัน (เสาร์ ${totalSaturdays} วัน, อาทิตย์ ${totalSundays} วัน)</span>
+      `;
+      remarksList.appendChild(weekendItem);
+
+      if (monthHolidays.length === 0) {
+        const noHolidays = document.createElement('div');
+        noHolidays.className = 'remark-item';
+        noHolidays.style.borderLeftColor = 'var(--slate-300)';
+        noHolidays.innerHTML = `
+          <span class="remark-date-badge" style="background:var(--slate-100); color:var(--slate-600);">-</span>
+          <span class="remark-text" style="color:var(--slate-500);">ไม่มีวันหยุดราชการพิเศษในเดือนนี้</span>
+        `;
+        remarksList.appendChild(noHolidays);
+      } else {
+        monthHolidays.forEach(h => {
+          const item = document.createElement('div');
+          item.className = 'remark-item';
+          item.innerHTML = `
+            <span class="remark-date-badge">${h.day} ${thaiMonthNamesShort[month]}</span>
+            <span class="remark-text">${h.name}</span>
+          `;
+          remarksList.appendChild(item);
+        });
+      }
+    }
+
+    // =========================================================
+    // TIME FORMATTING (hh):(mm) HELPER FUNCTIONS
+    // =========================================================
+    function handleTimeInput(input, index, field) {
+      let val = input.value.replace(/[^0-9]/g, '');
+      if (val.length > 4) val = val.slice(0, 4);
+
+      if (val.length >= 3) {
+        let hh = parseInt(val.slice(0, 2), 10);
+        if (hh > 23) hh = 23;
+        val = String(hh).padStart(2, '0') + ':' + val.slice(2);
+      }
+      input.value = val;
+      updateRowData(index, field, val);
+    }
+
+    function handleTimeBlur(input, index, field) {
+      let raw = input.value.trim();
+      if (!raw) {
+        updateRowData(index, field, '');
+        return;
+      }
+
+      let digits = raw.replace(/[^0-9]/g, '');
+      let formatted = '';
+
+      if (digits.length === 1) {
+        formatted = '0' + digits + ':00';
+      } else if (digits.length === 2) {
+        let hh = Math.min(23, parseInt(digits, 10));
+        formatted = String(hh).padStart(2, '0') + ':00';
+      } else if (digits.length === 3) {
+        let hh = Math.min(23, parseInt(digits.slice(0, 2), 10));
+        let mm = parseInt(digits.charAt(2) + '0', 10);
+        if (mm > 59) mm = 50;
+        formatted = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+      } else if (digits.length >= 4) {
+        let hh = Math.min(23, parseInt(digits.slice(0, 2), 10));
+        let mm = Math.min(59, parseInt(digits.slice(2, 4), 10));
+        formatted = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+      }
+
+      input.value = formatted;
+      updateRowData(index, field, formatted);
+    }
+
+    function renderGrid() {
+      const tbody = document.getElementById('gridTbody');
+      tbody.innerHTML = '';
+
+      activeRows.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+
+        if (row.type === 'weekend' || row.type === 'holiday') {
+          tr.className = row.type === 'holiday' ? 'holiday-row' : 'weekend-row';
+
+          tr.innerHTML = `
+            <td class="col-w-day">
+              <input type="text" class="grid-input" value="${row.day || ''}" oninput="updateRowData(${idx}, 'day', this.value)">
+              <span class="print-only-val">${row.day || ''}</span>
+            </td>
+            <td colspan="8" class="merged-content">
+              <input type="text" class="grid-input" style="font-weight:700; width:100%; text-align:center;" value="${row.mergedText || ''}" oninput="updateRowData(${idx}, 'mergedText', this.value)">
+              <span class="print-only-val" style="font-weight:700;">${row.mergedText || ''}</span>
+            </td>
+            <td class="col-w-action no-print">
+              <button type="button" class="btn-cell-del" onclick="deleteRow(${idx})" title="ลบแถว">✕</button>
+            </td>
+          `;
+        } else {
+          tr.className = 'workday-row';
+          tr.innerHTML = `
+            <td class="col-w-day">
+              <input type="text" class="grid-input" value="${row.day || ''}" oninput="updateRowData(${idx}, 'day', this.value)">
+              <span class="print-only-val">${row.day || ''}</span>
+            </td>
+            <td class="col-w-time">
+              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.timeIn || ''}" oninput="handleTimeInput(this, ${idx}, 'timeIn')" onblur="handleTimeBlur(this, ${idx}, 'timeIn')">
+              <span class="print-only-val">${row.timeIn || ''}</span>
+            </td>
+            <td class="col-w-time">
+              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.timeOut || ''}" oninput="handleTimeInput(this, ${idx}, 'timeOut')" onblur="handleTimeBlur(this, ${idx}, 'timeOut')">
+              <span class="print-only-val">${row.timeOut || ''}</span>
+            </td>
+            <td class="col-w-sign">
+              <input type="text" class="grid-input" value="${row.signHead || ''}" oninput="updateRowData(${idx}, 'signHead', this.value)">
+              <span class="print-only-val">${row.signHead || ''}</span>
+            </td>
+            <td class="col-w-ot">
+              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.otStart || ''}" oninput="handleTimeInput(this, ${idx}, 'otStart')" onblur="handleTimeBlur(this, ${idx}, 'otStart')">
+              <span class="print-only-val">${row.otStart || ''}</span>
+            </td>
+            <td class="col-w-ot">
+              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.otEnd || ''}" oninput="handleTimeInput(this, ${idx}, 'otEnd')" onblur="handleTimeBlur(this, ${idx}, 'otEnd')">
+              <span class="print-only-val">${row.otEnd || ''}</span>
+            </td>
+            <td class="col-w-sign">
+              <input type="text" class="grid-input" value="${row.signOtApprove || ''}" oninput="updateRowData(${idx}, 'signOtApprove', this.value)">
+              <span class="print-only-val">${row.signOtApprove || ''}</span>
+            </td>
+            <td class="col-w-desc">
+              <textarea class="grid-textarea" rows="2" placeholder="ระบุรายละเอียดงาน..." oninput="updateRowData(${idx}, 'description', this.value); autoResize(this);">${row.description || ''}</textarea>
+              <div class="print-only-val print-only-desc">${escapeHtml(row.description || '')}</div>
+            </td>
+            <td class="col-w-note">
+              <input type="text" class="grid-input" value="${row.remarks || ''}" oninput="updateRowData(${idx}, 'remarks', this.value)">
+              <span class="print-only-val">${row.remarks || ''}</span>
+            </td>
+            <td class="col-w-action no-print">
+              <button type="button" class="btn-cell-del" onclick="deleteRow(${idx})" title="ลบแถว">✕</button>
+            </td>
+          `;
+        }
+
+        tbody.appendChild(tr);
+      });
+
+      document.querySelectorAll('.grid-textarea').forEach(autoResize);
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function autoResize(el) {
+      el.style.height = 'auto';
+      el.style.height = (el.scrollHeight + 2) + 'px';
+    }
+
+    function updateRowData(index, field, val) {
+      activeRows[index][field] = val;
+      const tr = document.getElementById('gridTbody').children[index];
+      if (tr) {
+        if (field === 'description') {
+          const printDesc = tr.querySelector('.print-only-desc');
+          if (printDesc) printDesc.innerHTML = escapeHtml(val);
+        } else {
+          const inputs = tr.querySelectorAll('.grid-input');
+          inputs.forEach(inp => {
+            const span = inp.nextElementSibling;
+            if (span && span.classList.contains('print-only-val')) {
+              span.innerText = inp.value;
+            }
+          });
+        }
+      }
+    }
+
+    function deleteRow(index) {
+      activeRows.splice(index, 1);
+      renderGrid();
+      saveActiveMonthData(false);
+      showToast("ลบแถวเรียบร้อย");
+    }
+
+    function addNewRow(type = 'workday') {
+      const nextDay = activeRows.length ? Math.max(...activeRows.map(r => parseInt(r.day) || 0)) + 1 : 1;
+      if (type === 'holiday') {
+        activeRows.push({
+          day: nextDay,
+          type: 'holiday',
+          mergedText: 'วันหยุดพิเศษ'
+        });
+      } else {
+        activeRows.push({
+          day: nextDay,
+          timeIn: "",
+          timeOut: "",
+          signHead: "",
+          otStart: "",
+          otEnd: "",
+          signOtApprove: "",
+          description: "",
+          remarks: "",
+          type: "workday"
+        });
+      }
+      renderGrid();
+      saveActiveMonthData(false);
+      showToast("เพิ่มแถวใหม่เรียบร้อย");
+    }
+
+    function fillNormalWorkHours() {
+      let count = 0;
+      activeRows.forEach(row => {
+        if (row.type === 'workday') {
+          row.timeIn = "08:30";
+          row.timeOut = "17:30";
+          count++;
+        }
+      });
+      renderGrid();
+      saveActiveMonthData(false);
+      showToast(`เติมเวลาปกติให้ ${count} วันเรียบร้อย`);
+    }
+
+    function resetActiveMonthRows() {
+      const tabObj = tabMonths.find(t => t.key === currentActiveTabKey);
+      if (confirm(`คุณต้องการล้างข้อมูลและสร้างตารางเดือน ${tabObj ? tabObj.label : ''} ใหม่ใช่หรือไม่?`)) {
+        activeRows = generateDefaultRowsForMonth(tabObj.year, tabObj.month);
+        renderGrid();
+        saveActiveMonthData(false);
+        renderMonthTabs();
+        showToast("รีเซ็ตตารางเดือนนี้เรียบร้อย");
+      }
+    }
+
+    function triggerPrint() {
+      showToast("🖨️ กำลังเปิดหน้าต่างพิมพ์ (อย่าลืมติ๊ก 'ส่วนหัวและส่วนท้าย' ออก)");
+      setTimeout(() => {
+        window.print();
+      }, 250);
+    }
+
+    // Export to Excel (With Signature Footer)
+    function exportToExcel() {
+      saveActiveMonthData(false);
+      const name = document.getElementById('nameInput').value;
+      const monthYear = document.getElementById('monthYearInput').value;
+      
+      let html = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+          <meta charset="utf-8">
+          <!--[if gte mso 9]>
+          <xml>
+            <x:ExcelWorkbook>
+              <x:ExcelWorksheets>
+                <x:ExcelWorksheet>
+                  <x:Name>Timesheet</x:Name>
+                  <x:WorksheetOptions>
+                    <x:DisplayGridlines/>
+                  </x:WorksheetOptions>
+                </x:ExcelWorksheet>
+              </x:ExcelWorksheets>
+            </x:ExcelWorkbook>
+          </xml>
+          <![endif]-->
+          <style>
+            body, table, th, td, span, div, p {
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+            table {
+              border-collapse: collapse;
+              width: 100%;
+              font-family: 'Calibri', Arial, sans-serif !important;
+              font-size: 11pt;
+            }
+            th, td {
+              border: 0.5pt solid #444444;
+              padding: 6px;
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+            th {
+              background-color: #E2E8F0;
+              font-weight: bold;
+              text-align: center;
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+            .col-text {
+              mso-number-format:"\\@";
+              text-align: center;
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+            .col-desc {
+              mso-number-format:"\\@";
+              text-align: left;
+              vertical-align: top;
+              white-space: pre-wrap;
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+            .row-merged {
+              background-color: #F8FAFC;
+              font-weight: bold;
+              text-align: center;
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+            .sig-cell {
+              border: none !important;
+              font-size: 11pt;
+              font-family: 'Calibri', Arial, sans-serif !important;
+            }
+          </style>
+        </head>
+        <body>
+          <table>
+            <tr><th colspan="9" style="font-size:14pt; padding:10px;">แบบฟอร์มบันทึกเวลาปฏิบัติงาน (Timesheet)</th></tr>
+            <tr>
+              <td colspan="4"><b>ชื่อ-สกุล:</b> ${name}</td>
+              <td colspan="5"><b>ประจำเดือน/ปี:</b> ${monthYear}</td>
+            </tr>
+            <tr>
+              <td colspan="4"><b>หน่วยงาน/สังกัด:</b> ${document.getElementById('siteInput').value}</td>
+              <td colspan="5"><b>ตำแหน่ง:</b> ${document.getElementById('positionInput').value}</td>
+            </tr>
+            <tr>
+              <td colspan="4"><b>แผนก:</b> ${document.getElementById('departmentInput').value}</td>
+              <td colspan="5" class="col-text"><b>รหัสพนักงาน:</b> ${document.getElementById('employeeIdInput').value}</td>
+            </tr>
+            <tr>
+              <th rowspan="2" style="width:40pt;">วันที่</th>
+              <th rowspan="2" style="width:55pt;">เข้า<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
+              <th rowspan="2" style="width:55pt;">ออก<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
+              <th rowspan="2" style="width:70pt;">ลายเซ็นต์หัวหน้างาน</th>
+              <th colspan="2" style="width:110pt;">O.T</th>
+              <th rowspan="2" style="width:70pt;">หัวหน้าอนุมัติ</th>
+              <th rowspan="2" style="width:280pt;">รายละเอียดงาน</th>
+              <th rowspan="2" style="width:80pt;">หมายเหตุ</th>
+            </tr>
+            <tr>
+              <th style="width:55pt;">เริ่มงาน<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
+              <th style="width:55pt;">ออกเวลา<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
+            </tr>
+      `;
+
+      activeRows.forEach(row => {
+        if (row.type === 'weekend' || row.type === 'holiday') {
+          html += `
+            <tr class="row-merged">
+              <td class="col-text">${row.day}</td>
+              <td colspan="8">${row.mergedText}</td>
+            </tr>
+          `;
+        } else {
+          const cleanDesc = (row.description || '')
+            .replace(/\r?\n/g, '<br style="mso-data-placement:same-cell;" />');
+
+          html += `
+            <tr>
+              <td class="col-text">${row.day || ''}</td>
+              <td class="col-text">${row.timeIn || ''}</td>
+              <td class="col-text">${row.timeOut || ''}</td>
+              <td>${row.signHead || ''}</td>
+              <td class="col-text">${row.otStart || ''}</td>
+              <td class="col-text">${row.otEnd || ''}</td>
+              <td>${row.signOtApprove || ''}</td>
+              <td class="col-desc">${cleanDesc}</td>
+              <td>${row.remarks || ''}</td>
+            </tr>
+          `;
+        }
+      });
+
+      // Signature Footer in Excel
+      html += `
+            <tr><td colspan="9" class="sig-cell" style="height:25pt;"></td></tr>
+            <tr>
+              <td colspan="4" align="center" class="sig-cell">...................................................</td>
+              <td class="sig-cell"></td>
+              <td colspan="4" align="center" class="sig-cell">...................................................</td>
+            </tr>
+            <tr>
+              <td colspan="4" align="center" class="sig-cell">( ${name} )</td>
+              <td class="sig-cell"></td>
+              <td colspan="4" align="center" class="sig-cell">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</td>
+            </tr>
+            <tr>
+              <td colspan="4" align="center" class="sig-cell"><b>พนักงาน</b></td>
+              <td class="sig-cell"></td>
+              <td colspan="4" align="center" class="sig-cell"><b>ผู้จัดการ/หัวหน้างาน</b></td>
+            </tr>
+            <tr>
+              <td colspan="4" align="center" class="sig-cell">วันที่ :............................................</td>
+              <td class="sig-cell"></td>
+              <td colspan="4" align="center" class="sig-cell">วันที่ :............................................</td>
+            </tr>
+      `;
+
+      html += `</table></body></html>`;
+
+      const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Timesheet_${name}_${monthYear}.xls`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("📥 ส่งออกไฟล์ Excel พร้อมลายเซ็นต์เรียบร้อย!");
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>⚡</span> <span>${msg}</span>`;
+      box.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 10);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    window.addEventListener('beforeunload', () => {
+      saveActiveMonthData(false);
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      buildDefaultTabMonths();
+      renderMonthTabs();
+      loadActiveMonthData();
+    });
+  </script>
+</body>
+</html>
