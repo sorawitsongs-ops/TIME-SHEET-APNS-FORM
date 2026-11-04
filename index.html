@@ -526,6 +526,63 @@
       margin-bottom: 28px;
     }
 
+    .summary-panel {
+      width: min(100%, 430px);
+      margin: 0 auto 22px;
+      padding: 16px;
+      background: #ffffff;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      border-radius: 14px;
+      box-shadow: var(--card-shadow);
+      page-break-inside: avoid;
+    }
+
+    .summary-table {
+      width: 100%;
+      border: 1px solid var(--slate-300);
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 14px;
+      color: var(--slate-800);
+    }
+
+    .summary-table th,
+    .summary-table td {
+      padding: 8px 12px;
+    }
+
+    .summary-table th {
+      background: #315b9a;
+      color: #ffffff;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .summary-table td {
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .summary-table tbody tr:nth-child(even) td:first-child {
+      background: var(--slate-50);
+    }
+
+    .summary-table td:last-child {
+      text-align: center;
+      white-space: nowrap;
+      width: 145px;
+      background: #f8fafc;
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+
+    .summary-table tbody tr:last-child td {
+      border-bottom: 0;
+      background: #eff6ff;
+      font-weight: 700;
+    }
+
     .form-field {
       display: flex;
       align-items: center;
@@ -580,6 +637,12 @@
       border-collapse: collapse;
       font-size: 13px;
       background: #ffffff;
+    }
+
+    .print-page-top-spacer,
+    .print-page-bottom-spacer,
+    .print-final-group {
+      display: none;
     }
 
     table.timesheet-grid th,
@@ -659,6 +722,24 @@
       background: #bae6fd;
       border-color: #0ea5e9;
     }
+    .btn-leave-personal {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+    .btn-leave-personal:hover {
+      background: #bbf7d0;
+      border-color: #4ade80;
+    }
+    .btn-leave-other {
+      background: #fce7f3;
+      color: #9d174d;
+      border-color: #f9a8d4;
+    }
+    .btn-leave-other:hover {
+      background: #fbcfe8;
+      border-color: #f472b6;
+    }
     .btn-leave-undo {
       background: #f1f5f9;
       color: #475569;
@@ -676,6 +757,12 @@
 
     tr.annual-leave-row { background-color: #e0f2fe !important; }
     tr.annual-leave-row td { color: #075985 !important; }
+
+    tr.personal-leave-row { background-color: #dcfce7 !important; }
+    tr.personal-leave-row td { color: #166534 !important; }
+
+    tr.other-leave-row { background-color: #fce7f3 !important; }
+    tr.other-leave-row td { color: #9d174d !important; }
 /* Input Cells (Screen View) */
     .grid-input {
       width: 100%;
@@ -701,6 +788,82 @@
       letter-spacing: 0.5px;
       font-family: 'Plus Jakarta Sans', monospace;
       font-weight: 600;
+    }
+
+    .time-picker-trigger {
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .time-picker-trigger:hover {
+      background: #ffffff;
+      border-color: var(--slate-300);
+    }
+
+    .time-picker-popup {
+      position: fixed;
+      z-index: 10000;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 8px;
+      width: 230px;
+      padding: 12px;
+      background: #ffffff;
+      border: 1px solid var(--slate-300);
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.2);
+    }
+
+    .time-picker-popup[hidden] {
+      display: none;
+    }
+
+    .time-picker-field {
+      display: grid;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--slate-600);
+    }
+
+    .time-picker-field select {
+      width: 100%;
+      padding: 6px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--slate-900);
+      font: 600 14px 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .time-picker-separator {
+      padding-bottom: 7px;
+      color: var(--slate-700);
+      font-weight: 700;
+    }
+
+    .time-picker-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .time-picker-actions button {
+      padding: 5px 10px;
+      border: 1px solid var(--slate-300);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--slate-700);
+      font: 600 12px 'Sarabun', sans-serif;
+      cursor: pointer;
+    }
+
+    .time-picker-actions .time-picker-done {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
     }
 
     .grid-textarea {
@@ -777,6 +940,10 @@
       grid-template-columns: 1fr 1fr;
       column-gap: 80px;
       page-break-inside: avoid;
+    }
+
+    .print-signatures {
+      display: none;
     }
 
     .signature-block {
@@ -1263,122 +1430,8 @@
       }
     }
 
-    /* =========================================================
-       PRINT OPTIMIZATIONS (Completely removes Browser Header & Footer)
-       ========================================================= */
-    @page {
-      size: A4 portrait;
-      margin: 0 !important; /* Zero margin removes browser header (date, title) & footer (URL, 1/3) */
-    }
-
-    @media print {
-      html, body {
-        background: #ffffff !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-      }
-
-      .app-header, .tabs-wrapper, .calendar-card, .quick-tools, .col-w-action, .no-print, .toast-container, .mobile-fab-save, .mobile-table-hint {
-        display: none !important;
-      }
-
-      .sheet-paper {
-        border: none !important;
-        box-shadow: none !important;
-        padding: 12mm 10mm !important; /* Safe printable margin inside page without triggering browser headers */
-        margin: 0 auto !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-      }
-
-      .profile-info-grid {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-        margin-bottom: 18px !important;
-      }
-
-      .field-line-input {
-        border-bottom: 1.5px solid #000 !important;
-        color: #000 !important;
-      }
-
-      .table-responsive {
-        border: 1.5px solid #000 !important;
-        box-shadow: none !important;
-        overflow: visible !important;
-        margin-bottom: 24px !important;
-      }
-
-      table.timesheet-grid {
-        border-collapse: collapse !important;
-        border: 1.5px solid #000 !important;
-      }
-
-      table.timesheet-grid thead th.col-w-day,
-      table.timesheet-grid td.col-w-day {
-        position: static !important;
-        box-shadow: none !important;
-      }
-
-      table.timesheet-grid th, table.timesheet-grid td {
-        border: 1px solid #000 !important;
-        color: #000 !important;
-        padding: 5px 6px !important;
-      }
-
-      table.timesheet-grid thead th {
-        background-color: #f1f5f9 !important;
-        -webkit-print-color-adjust: exact !important;
-      }
-
-      .grid-input,
-      .grid-textarea {
-        display: none !important;
-      }
-
-      .print-only-val {
-        display: block !important;
-        width: 100% !important;
-        text-align: center !important;
-        font-size: 13px !important;
-        line-height: 1.4 !important;
-        color: #000 !important;
-        white-space: pre-wrap !important;
-        word-break: break-word !important;
-      }
-
-      .print-only-desc {
-        text-align: left !important;
-        padding: 2px 4px !important;
-      }
-
-      tr.weekend-row {
-        background-color: #f8fafc !important;
-      }
-
-      tr.holiday-row {
-        background-color: #fefce8 !important;
-      }
-
-      tr.sick-leave-row,
-      tr.annual-leave-row {
-        background-color: #ffffff !important;
-      }
-
-      .sheet-signatures-section {
-        margin-top: 28px !important;
-        padding: 0 20px !important;
-        page-break-inside: avoid !important;
-      }
-
-      .sig-dots-line, .sig-date-dots {
-        color: #000 !important;
-      }
-    }
   </style>
+  <link rel="stylesheet" href="config/print.css">
 </head>
 <body>
 
@@ -1493,6 +1546,21 @@
       </div>
     </section>
 
+    <section class="summary-panel" aria-label="Monthly timesheet summary">
+      <table class="summary-table">
+        <thead>
+          <tr><th colspan="2">Summary</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Monthly Working Day</td><td id="summaryMonthlyWorkingDays">-</td></tr>
+          <tr><td>Annual Leave</td><td id="summaryAnnualLeave">-</td></tr>
+          <tr><td>Sick Leave</td><td id="summarySickLeave">-</td></tr>
+          <tr><td>Personal Leave</td><td id="summaryPersonalLeave">-</td></tr>
+          <tr><td>Actual Working Day</td><td id="summaryActualWorkingDays">-</td></tr>
+        </tbody>
+      </table>
+    </section>
+
     <!-- Main Timesheet Paper Container -->
     <main class="sheet-paper">
 
@@ -1503,12 +1571,6 @@
         </div>
 
         <div class="quick-tools-actions">
-          <button type="button" class="btn btn-white" onclick="addNewRow('workday')">
-            ➕ เพิ่มวันทำงาน
-          </button>
-          <button type="button" class="btn btn-white" onclick="addNewRow('holiday')">
-            ➕ เพิ่มวันหยุดพิเศษ
-          </button>
           <button type="button" class="btn btn-white" onclick="fillNormalWorkHours()" title="เติมเวลาทำงาน 08:30 - 17:30 ทุกวันทำงานพร้อมกัน">
             🕒 เติมเวลา 08:30 - 17:30
           </button>
@@ -1593,7 +1655,20 @@
       <!-- Timesheet Grid -->
       <div class="table-responsive">
         <table class="timesheet-grid" id="mainGrid">
+          <colgroup>
+            <col class="col-w-day">
+            <col class="col-w-time">
+            <col class="col-w-time">
+            <col class="col-w-sign">
+            <col class="col-w-ot">
+            <col class="col-w-ot">
+            <col class="col-w-sign">
+            <col class="col-w-desc" style="width:340px">
+            <col class="col-w-note">
+            <col class="col-w-action no-print">
+          </colgroup>
           <thead>
+            <tr class="print-page-top-spacer" aria-hidden="true"><th colspan="10"></th></tr>
             <tr>
               <th rowspan="2" class="col-w-day">วันที่</th>
               <th rowspan="2" class="col-w-time">เข้า<span class="th-time-format">(hh) : (mm)</span></th>
@@ -1613,12 +1688,59 @@
           <tbody id="gridTbody">
             <!-- Dynamic rows rendered here -->
           </tbody>
+          <tbody id="gridFinalTbody" class="print-final-group">
+            <tr class="print-final-combined-row">
+              <td colspan="10" class="signature-footer-cell">
+                <table class="timesheet-grid print-final-inner-grid">
+                  <colgroup>
+                    <col class="col-w-day">
+                    <col class="col-w-time">
+                    <col class="col-w-time">
+                    <col class="col-w-sign">
+                    <col class="col-w-ot">
+                    <col class="col-w-ot">
+                    <col class="col-w-sign">
+                    <col class="col-w-desc" style="width:340px">
+                    <col class="col-w-note">
+                    <col class="col-w-action no-print">
+                  </colgroup>
+                  <tbody id="gridFinalRowBody"></tbody>
+                </table>
+                <footer class="sheet-signatures-section print-signatures">
+                  <div class="signature-block">
+                    <div class="sig-dots-line">...................................................</div>
+                    <div class="sig-name-wrap">
+                      (&nbsp;<span class="footerEmployeeNamePrint">นายสรวิศ ทรงสมรรถภาพ</span>&nbsp;)
+                    </div>
+                    <div class="sig-role-text">พนักงาน</div>
+                    <div class="sig-date-line">
+                      <span>วันที่ :</span>
+                      <span class="sig-date-dots">............................................</span>
+                    </div>
+                  </div>
+
+                  <div class="signature-block">
+                    <div class="sig-dots-line">...................................................</div>
+                    <div class="sig-name-wrap">
+                      (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+                    </div>
+                    <div class="sig-role-text">ผู้จัดการ/หัวหน้างาน</div>
+                    <div class="sig-date-line">
+                      <span>วันที่ :</span>
+                      <span class="sig-date-dots">............................................</span>
+                    </div>
+                  </div>
+                </footer>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot class="print-page-bottom-spacer" aria-hidden="true">
+            <tr><td colspan="10"></td></tr>
+          </tfoot>
         </table>
       </div>
 
-      <!-- Signature Footer Block (Matching uploaded image) -->
-      <footer class="sheet-signatures-section">
-        <!-- Left: Employee Signature -->
+      <footer class="sheet-signatures-section screen-signatures">
         <div class="signature-block">
           <div class="sig-dots-line">...................................................</div>
           <div class="sig-name-wrap">
@@ -1631,7 +1753,6 @@
           </div>
         </div>
 
-        <!-- Right: Manager / Supervisor Signature -->
         <div class="signature-block">
           <div class="sig-dots-line">...................................................</div>
           <div class="sig-name-wrap">
@@ -1661,6 +1782,23 @@
     <span>บันทึก</span>
   </button>
 
+  <div class="time-picker-popup no-print" id="timePickerPopup" hidden>
+    <label class="time-picker-field">
+      <span>ชั่วโมง</span>
+      <select id="timePickerHour" aria-label="ชั่วโมง"></select>
+    </label>
+    <span class="time-picker-separator">:</span>
+    <label class="time-picker-field">
+      <span>นาที</span>
+      <select id="timePickerMinute" aria-label="นาที"></select>
+    </label>
+    <div class="time-picker-actions">
+      <button type="button" class="time-picker-clear" onclick="clearTimePicker()">ล้าง</button>
+      <button type="button" class="time-picker-done" onclick="applyTimePicker()">ตกลง</button>
+    </div>
+  </div>
+
+  <script src="config/export.js"></script>
   <script>
     // Thai Official Holidays Database
     const THAI_HOLIDAYS = {
@@ -1802,6 +1940,9 @@
 
     function syncEmployeeName(name) {
       document.getElementById('footerEmployeeName').innerText = name || "........................................";
+      document.querySelectorAll('.footerEmployeeNamePrint').forEach(el => {
+        el.innerText = name || "........................................";
+      });
     }
 
     function saveProfile() {
@@ -2081,63 +2222,110 @@
       }
     }
 
-    // =========================================================
-    // TIME FORMATTING (hh):(mm) HELPER FUNCTIONS
-    // =========================================================
-    function handleTimeInput(input, index, field) {
-      let val = input.value.replace(/[^0-9]/g, '');
-      if (val.length > 4) val = val.slice(0, 4);
-
-      if (val.length >= 3) {
-        let hh = parseInt(val.slice(0, 2), 10);
-        if (hh > 23) hh = 23;
-        val = String(hh).padStart(2, '0') + ':' + val.slice(2);
-      }
-      input.value = val;
-      updateRowData(index, field, val);
+    function getSummaryData() {
+      const leaveTypes = ['annual-leave', 'sick-leave', 'personal-leave'];
+      return {
+        monthlyWorkingDays: activeRows.filter(row => row.type === 'workday' || leaveTypes.includes(row.type)).length,
+        annualLeave: activeRows.filter(row => row.type === 'annual-leave').length,
+        sickLeave: activeRows.filter(row => row.type === 'sick-leave').length,
+        personalLeave: activeRows.filter(row => row.type === 'personal-leave').length,
+        actualWorkingDays: activeRows.filter(row => row.type === 'workday').length
+      };
     }
 
-    function handleTimeBlur(input, index, field) {
-      let raw = input.value.trim();
-      if (!raw) {
-        updateRowData(index, field, '');
+    function renderSummary() {
+      const summary = getSummaryData();
+      document.getElementById('summaryMonthlyWorkingDays').textContent = `${summary.monthlyWorkingDays} Days`;
+      document.getElementById('summaryAnnualLeave').textContent = summary.annualLeave || '-';
+      document.getElementById('summarySickLeave').textContent = summary.sickLeave || '-';
+      document.getElementById('summaryPersonalLeave').textContent = summary.personalLeave || '-';
+      document.getElementById('summaryActualWorkingDays').textContent = `${summary.actualWorkingDays} Days`;
+    }
+
+    let activeTimePickerTarget = null;
+
+    function openTimePicker(index, field, trigger) {
+      const popup = document.getElementById('timePickerPopup');
+      const hourSelect = document.getElementById('timePickerHour');
+      const minuteSelect = document.getElementById('timePickerMinute');
+      const [currentHour = '', currentMinute = ''] = (activeRows[index][field] || '').split(':');
+
+      hourSelect.innerHTML = '<option value="">HH</option>' + Array.from({ length: 24 }, (_, hour) => {
+        const value = String(hour).padStart(2, '0');
+        return `<option value="${value}">${value}</option>`;
+      }).join('');
+      minuteSelect.innerHTML = '<option value="">MM</option>' + Array.from({ length: 60 }, (_, minute) => {
+        const value = String(minute).padStart(2, '0');
+        return `<option value="${value}">${value}</option>`;
+      }).join('');
+
+      hourSelect.value = currentHour;
+      minuteSelect.value = currentMinute;
+      activeTimePickerTarget = { index, field, trigger };
+      popup.hidden = false;
+
+      const rect = trigger.getBoundingClientRect();
+      const popupWidth = 230;
+      const popupHeight = 120;
+      const left = Math.max(8, Math.min(rect.left, window.innerWidth - popupWidth - 8));
+      const top = rect.bottom + popupHeight <= window.innerHeight
+        ? rect.bottom + 4
+        : Math.max(8, rect.top - popupHeight - 4);
+      popup.style.left = `${left}px`;
+      popup.style.top = `${top}px`;
+      hourSelect.focus();
+    }
+
+    function closeTimePicker() {
+      document.getElementById('timePickerPopup').hidden = true;
+      activeTimePickerTarget = null;
+    }
+
+    function applyTimePicker() {
+      if (!activeTimePickerTarget) return;
+      const hour = document.getElementById('timePickerHour').value;
+      const minute = document.getElementById('timePickerMinute').value;
+      if (!hour || !minute) {
+        showToast('กรุณาเลือกชั่วโมงและนาที');
         return;
       }
 
-      let digits = raw.replace(/[^0-9]/g, '');
-      let formatted = '';
-
-      if (digits.length === 1) {
-        formatted = '0' + digits + ':00';
-      } else if (digits.length === 2) {
-        let hh = Math.min(23, parseInt(digits, 10));
-        formatted = String(hh).padStart(2, '0') + ':00';
-      } else if (digits.length === 3) {
-        let hh = Math.min(23, parseInt(digits.slice(0, 2), 10));
-        let mm = parseInt(digits.charAt(2) + '0', 10);
-        if (mm > 59) mm = 50;
-        formatted = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
-      } else if (digits.length >= 4) {
-        let hh = Math.min(23, parseInt(digits.slice(0, 2), 10));
-        let mm = Math.min(59, parseInt(digits.slice(2, 4), 10));
-        formatted = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
-      }
-
-      input.value = formatted;
-      updateRowData(index, field, formatted);
+      updateRowData(activeTimePickerTarget.index, activeTimePickerTarget.field, `${hour}:${minute}`);
+      closeTimePicker();
+      saveActiveMonthData(false);
     }
+
+    function clearTimePicker() {
+      if (!activeTimePickerTarget) return;
+      updateRowData(activeTimePickerTarget.index, activeTimePickerTarget.field, '');
+      closeTimePicker();
+      saveActiveMonthData(false);
+    }
+
+    document.addEventListener('click', event => {
+      const popup = document.getElementById('timePickerPopup');
+      if (!popup.hidden && !popup.contains(event.target) && !event.target.closest('.time-picker-trigger')) {
+        closeTimePicker();
+      }
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && activeTimePickerTarget) closeTimePicker();
+    });
 
     function renderGrid() {
       const tbody = document.getElementById('gridTbody');
       tbody.innerHTML = '';
+      renderSummary();
 
       activeRows.forEach((row, idx) => {
         const tr = document.createElement('tr');
 
-        if (row.type === 'weekend' || row.type === 'holiday' || row.type === 'sick-leave' || row.type === 'annual-leave') {
+        if (row.type === 'weekend' || row.type === 'holiday' || row.type === 'sick-leave' || row.type === 'annual-leave' || row.type === 'personal-leave' || row.type === 'other-leave') {
           if (row.type === 'holiday') tr.className = 'holiday-row';
           else if (row.type === 'sick-leave') tr.className = 'sick-leave-row';
           else if (row.type === 'annual-leave') tr.className = 'annual-leave-row';
+          else if (row.type === 'personal-leave') tr.className = 'personal-leave-row';
+          else if (row.type === 'other-leave') tr.className = 'other-leave-row';
           else tr.className = 'weekend-row';
 
           tr.innerHTML = `
@@ -2149,7 +2337,7 @@
               <input type="text" class="grid-input" style="font-weight:700; width:100%; text-align:center;" value="${row.mergedText || ''}" oninput="updateRowData(${idx}, 'mergedText', this.value)">
               <span class="print-only-val" style="font-weight:700;">${row.mergedText || ''}</span>
             </td>
-            ${row.type === 'sick-leave' || row.type === 'annual-leave' ? `
+            ${row.type === 'sick-leave' || row.type === 'annual-leave' || row.type === 'personal-leave' || row.type === 'other-leave' ? `
               <td class="col-w-action no-print">
                 <button type="button" class="btn-leave btn-leave-undo" onclick="undoLeave(${idx})">undo</button>
               </td>
@@ -2163,11 +2351,11 @@
               <span class="print-only-val">${row.day || ''}</span>
             </td>
             <td class="col-w-time">
-              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.timeIn || ''}" oninput="handleTimeInput(this, ${idx}, 'timeIn')" onblur="handleTimeBlur(this, ${idx}, 'timeIn')">
+              <button type="button" class="grid-input time-input-field time-picker-trigger" data-time-field="timeIn" aria-label="เลือกเวลาเข้า" onclick="openTimePicker(${idx}, 'timeIn', this)">${row.timeIn || 'HH:mm'}</button>
               <span class="print-only-val">${row.timeIn || ''}</span>
             </td>
             <td class="col-w-time">
-              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.timeOut || ''}" oninput="handleTimeInput(this, ${idx}, 'timeOut')" onblur="handleTimeBlur(this, ${idx}, 'timeOut')">
+              <button type="button" class="grid-input time-input-field time-picker-trigger" data-time-field="timeOut" aria-label="เลือกเวลาออก" onclick="openTimePicker(${idx}, 'timeOut', this)">${row.timeOut || 'HH:mm'}</button>
               <span class="print-only-val">${row.timeOut || ''}</span>
             </td>
             <td class="col-w-sign">
@@ -2175,11 +2363,11 @@
               <span class="print-only-val">${row.signHead || ''}</span>
             </td>
             <td class="col-w-ot">
-              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.otStart || ''}" oninput="handleTimeInput(this, ${idx}, 'otStart')" onblur="handleTimeBlur(this, ${idx}, 'otStart')">
+              <button type="button" class="grid-input time-input-field time-picker-trigger" data-time-field="otStart" aria-label="เลือกเวลาเริ่ม OT" onclick="openTimePicker(${idx}, 'otStart', this)">${row.otStart || 'HH:mm'}</button>
               <span class="print-only-val">${row.otStart || ''}</span>
             </td>
             <td class="col-w-ot">
-              <input type="text" class="grid-input time-input-field" placeholder="hh:mm" maxlength="5" value="${row.otEnd || ''}" oninput="handleTimeInput(this, ${idx}, 'otEnd')" onblur="handleTimeBlur(this, ${idx}, 'otEnd')">
+              <button type="button" class="grid-input time-input-field time-picker-trigger" data-time-field="otEnd" aria-label="เลือกเวลาออก OT" onclick="openTimePicker(${idx}, 'otEnd', this)">${row.otEnd || 'HH:mm'}</button>
               <span class="print-only-val">${row.otEnd || ''}</span>
             </td>
             <td class="col-w-sign">
@@ -2198,6 +2386,8 @@
               <div class="leave-btn-group">
                 <button type="button" class="btn-leave btn-leave-sick" onclick="applyLeave(${idx}, 'sick')">ลาป่วย</button>
                 <button type="button" class="btn-leave btn-leave-annual" onclick="applyLeave(${idx}, 'annual')">พักร้อน</button>
+                <button type="button" class="btn-leave btn-leave-personal" onclick="applyLeave(${idx}, 'personal')">ลากิจ</button>
+                <button type="button" class="btn-leave btn-leave-other" onclick="applyLeave(${idx}, 'other')">อื่นๆ</button>
               </div>
             </td>
           `;
@@ -2205,6 +2395,12 @@
 
         tbody.appendChild(tr);
       });
+
+      const printFinalRowBody = document.getElementById('gridFinalRowBody');
+      printFinalRowBody.innerHTML = '';
+      if (tbody.lastElementChild) {
+        printFinalRowBody.appendChild(tbody.lastElementChild.cloneNode(true));
+      }
 
       document.querySelectorAll('.grid-textarea').forEach(autoResize);
     }
@@ -2227,6 +2423,8 @@
       activeRows[index][field] = val;
       const tr = document.getElementById('gridTbody').children[index];
       if (tr) {
+        const timeTrigger = tr.querySelector(`[data-time-field="${field}"]`);
+        if (timeTrigger) timeTrigger.textContent = val || 'HH:mm';
         if (field === 'description') {
           const printDesc = tr.querySelector('.print-only-desc');
           if (printDesc) printDesc.innerHTML = escapeHtml(val);
@@ -2235,7 +2433,9 @@
           inputs.forEach(inp => {
             const span = inp.nextElementSibling;
             if (span && span.classList.contains('print-only-val')) {
-              span.innerText = inp.value;
+              span.innerText = inp.classList.contains('time-picker-trigger')
+                ? (activeRows[index][inp.dataset.timeField] || '')
+                : inp.value;
             }
           });
         }
@@ -2251,7 +2451,14 @@
 
     function applyLeave(index, leaveType) {
       const row = activeRows[index];
-      if (!row) return;
+      const leaveOptions = {
+        sick: { type: 'sick-leave', label: 'ลาป่วย' },
+        annual: { type: 'annual-leave', label: 'ลาพักร้อน' },
+        personal: { type: 'personal-leave', label: 'ลากิจ' },
+        other: { type: 'other-leave', label: 'ลาอื่นๆ' }
+      };
+      const leave = leaveOptions[leaveType];
+      if (!row || !leave) return;
       // Save original workday data so undo can restore it
       row._savedWorkday = {
         timeIn: row.timeIn || '',
@@ -2263,9 +2470,8 @@
         description: row.description || '',
         remarks: row.remarks || ''
       };
-      const label = leaveType === 'sick' ? 'ลาป่วย' : 'ลาพักร้อน';
-      row.type = leaveType === 'sick' ? 'sick-leave' : 'annual-leave';
-      row.mergedText = label;
+      row.type = leave.type;
+      row.mergedText = leave.label;
       row.leaveType = leaveType;
       renderGrid();
       saveActiveMonthData(false);
@@ -2347,175 +2553,22 @@
     function triggerPrint() {
       showToast("🖨️ กำลังเปิดหน้าต่างพิมพ์ (อย่าลืมติ๊ก 'ส่วนหัวและส่วนท้าย' ออก)");
       setTimeout(() => {
-        window.print();
+        window.TimesheetExport.printPdf();
       }, 250);
     }
 
-    // Export to Excel (With Signature Footer)
     function exportToExcel() {
       saveActiveMonthData(false);
-      const name = document.getElementById('nameInput').value;
       const monthYear = document.getElementById('monthYearInput').value;
-      
-      let html = `
-        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
-        <head>
-          <meta charset="utf-8">
-          <!--[if gte mso 9]>
-          <xml>
-            <x:ExcelWorkbook>
-              <x:ExcelWorksheets>
-                <x:ExcelWorksheet>
-                  <x:Name>Timesheet</x:Name>
-                  <x:WorksheetOptions>
-                    <x:DisplayGridlines/>
-                  </x:WorksheetOptions>
-                </x:ExcelWorksheet>
-              </x:ExcelWorksheets>
-            </x:ExcelWorkbook>
-          </xml>
-          <![endif]-->
-          <style>
-            body, table, th, td, span, div, p {
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-            table {
-              border-collapse: collapse;
-              width: 100%;
-              font-family: 'Calibri', Arial, sans-serif !important;
-              font-size: 11pt;
-            }
-            th, td {
-              border: 0.5pt solid #444444;
-              padding: 6px;
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-            th {
-              background-color: #E2E8F0;
-              font-weight: bold;
-              text-align: center;
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-            .col-text {
-              mso-number-format:"\\@";
-              text-align: center;
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-            .col-desc {
-              mso-number-format:"\\@";
-              text-align: left;
-              vertical-align: top;
-              white-space: pre-wrap;
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-            .row-merged {
-              background-color: #F8FAFC;
-              font-weight: bold;
-              text-align: center;
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-            .sig-cell {
-              border: none !important;
-              font-size: 11pt;
-              font-family: 'Calibri', Arial, sans-serif !important;
-            }
-          </style>
-        </head>
-        <body>
-          <table>
-            <tr><th colspan="9" style="font-size:14pt; padding:10px;">แบบฟอร์มบันทึกเวลาปฏิบัติงาน (Timesheet)</th></tr>
-            <tr>
-              <td colspan="4"><b>ชื่อ-สกุล:</b> ${name}</td>
-              <td colspan="5"><b>ประจำเดือน/ปี:</b> ${monthYear}</td>
-            </tr>
-            <tr>
-              <td colspan="4"><b>หน่วยงาน/สังกัด:</b> ${document.getElementById('siteInput').value}</td>
-              <td colspan="5"><b>ตำแหน่ง:</b> ${document.getElementById('positionInput').value}</td>
-            </tr>
-            <tr>
-              <td colspan="4"><b>แผนก:</b> ${document.getElementById('departmentInput').value}</td>
-              <td colspan="5" class="col-text"><b>รหัสพนักงาน:</b> ${document.getElementById('employeeIdInput').value}</td>
-            </tr>
-            <tr>
-              <th rowspan="2" style="width:40pt;">วันที่</th>
-              <th rowspan="2" style="width:55pt;">เข้า<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
-              <th rowspan="2" style="width:55pt;">ออก<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
-              <th rowspan="2" style="width:70pt;">ลายเซ็นต์หัวหน้างาน</th>
-              <th colspan="2" style="width:110pt;">O.T</th>
-              <th rowspan="2" style="width:70pt;">หัวหน้าอนุมัติ</th>
-              <th rowspan="2" style="width:280pt;">รายละเอียดงาน</th>
-              <th rowspan="2" style="width:80pt;">หมายเหตุ</th>
-            </tr>
-            <tr>
-              <th style="width:55pt;">เริ่มงาน<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
-              <th style="width:55pt;">ออกเวลา<br><span style="font-size:9pt; font-weight:normal;">(hh):(mm)</span></th>
-            </tr>
-      `;
+      const profile = {
+        name: document.getElementById('nameInput').value,
+        site: document.getElementById('siteInput').value,
+        position: document.getElementById('positionInput').value,
+        department: document.getElementById('departmentInput').value,
+        employeeId: document.getElementById('employeeIdInput').value
+      };
 
-      activeRows.forEach(row => {
-        if (row.type === 'weekend' || row.type === 'holiday' || row.type === 'sick-leave' || row.type === 'annual-leave') {
-          html += `
-            <tr class="row-merged">
-              <td class="col-text">${row.day}</td>
-              <td colspan="8">${row.mergedText}</td>
-            </tr>
-          `;
-        } else {
-          const cleanDesc = (row.description || '')
-            .replace(/\r?\n/g, '<br style="mso-data-placement:same-cell;" />');
-
-          html += `
-            <tr>
-              <td class="col-text">${row.day || ''}</td>
-              <td class="col-text">${row.timeIn || ''}</td>
-              <td class="col-text">${row.timeOut || ''}</td>
-              <td>${row.signHead || ''}</td>
-              <td class="col-text">${row.otStart || ''}</td>
-              <td class="col-text">${row.otEnd || ''}</td>
-              <td>${row.signOtApprove || ''}</td>
-              <td class="col-desc">${cleanDesc}</td>
-              <td>${row.remarks || ''}</td>
-            </tr>
-          `;
-        }
-      });
-
-      // Signature Footer in Excel
-      html += `
-            <tr><td colspan="9" class="sig-cell" style="height:25pt;"></td></tr>
-            <tr>
-              <td colspan="4" align="center" class="sig-cell">...................................................</td>
-              <td class="sig-cell"></td>
-              <td colspan="4" align="center" class="sig-cell">...................................................</td>
-            </tr>
-            <tr>
-              <td colspan="4" align="center" class="sig-cell">( ${name} )</td>
-              <td class="sig-cell"></td>
-              <td colspan="4" align="center" class="sig-cell">( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</td>
-            </tr>
-            <tr>
-              <td colspan="4" align="center" class="sig-cell"><b>พนักงาน</b></td>
-              <td class="sig-cell"></td>
-              <td colspan="4" align="center" class="sig-cell"><b>ผู้จัดการ/หัวหน้างาน</b></td>
-            </tr>
-            <tr>
-              <td colspan="4" align="center" class="sig-cell">วันที่ :............................................</td>
-              <td class="sig-cell"></td>
-              <td colspan="4" align="center" class="sig-cell">วันที่ :............................................</td>
-            </tr>
-      `;
-
-      html += `</table></body></html>`;
-
-      const blob = new Blob([html], { type: 'application/vnd.ms-excel;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `Timesheet_${name}_${monthYear}.xls`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      window.TimesheetExport.exportExcel({ profile, monthYear, rows: activeRows });
       showToast("📥 ส่งออกไฟล์ Excel พร้อมลายเซ็นต์เรียบร้อย!");
     }
 
