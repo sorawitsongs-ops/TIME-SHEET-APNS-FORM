@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="th">
 <head>
   <meta charset="UTF-8">
@@ -618,9 +618,65 @@
     .col-w-ot { width: 85px; }
     .col-w-desc { text-align: left !important; min-width: 340px; padding: 6px 10px !important; }
     .col-w-note { width: 110px; }
-    .col-w-action { width: 60px; }
+    .col-w-action { width: 106px; }
 
-    /* Input Cells (Screen View) */
+    
+    /* Leave action buttons */
+    .leave-btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      width: 100%;
+    }
+    .btn-leave {
+      display: block;
+      width: 100%;
+      border: 1px solid;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 4px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+      line-height: 1.3;
+    }
+    .btn-leave-sick {
+      background: #fef3c7;
+      color: #92400e;
+      border-color: #fbbf24;
+    }
+    .btn-leave-sick:hover {
+      background: #fde68a;
+      border-color: #f59e0b;
+    }
+    .btn-leave-annual {
+      background: #e0f2fe;
+      color: #075985;
+      border-color: #38bdf8;
+    }
+    .btn-leave-annual:hover {
+      background: #bae6fd;
+      border-color: #0ea5e9;
+    }
+    .btn-leave-undo {
+      background: #f1f5f9;
+      color: #475569;
+      border-color: #cbd5e1;
+      font-size: 10.5px;
+    }
+    .btn-leave-undo:hover {
+      background: #e2e8f0;
+      border-color: #94a3b8;
+    }
+
+    /* Leave row — same look as weekend/holiday */
+    tr.sick-leave-row { background-color: #fef3c7 !important; }
+    tr.sick-leave-row td { color: #92400e !important; }
+
+    tr.annual-leave-row { background-color: #e0f2fe !important; }
+    tr.annual-leave-row td { color: #075985 !important; }
+/* Input Cells (Screen View) */
     .grid-input {
       width: 100%;
       border: 1px solid transparent;
@@ -1089,7 +1145,7 @@
       .col-w-ot { width: 74px; min-width: 72px; }
       .col-w-desc { min-width: 250px; }
       .col-w-note { width: 95px; min-width: 88px; }
-      .col-w-action { width: 50px; min-width: 48px; }
+      .col-w-action { width: 110px; min-width: 100px; }
 
       .grid-input {
         font-size: 12.5px;
@@ -1305,6 +1361,11 @@
 
       tr.holiday-row {
         background-color: #fefce8 !important;
+      }
+
+      tr.sick-leave-row,
+      tr.annual-leave-row {
+        background-color: #ffffff !important;
       }
 
       .sheet-signatures-section {
@@ -1542,7 +1603,7 @@
               <th rowspan="2" class="col-w-sign">หัวหน้า<br>อนุมัติ</th>
               <th rowspan="2" class="col-w-desc">รายละเอียดงาน</th>
               <th rowspan="2" class="col-w-note">หมายเหตุ</th>
-              <th rowspan="2" class="col-w-action no-print">จัดการ</th>
+              <th rowspan="2" class="col-w-action no-print">ลา</th>
             </tr>
             <tr>
               <th class="th-sub col-w-ot">เริ่มงาน<span class="th-time-format">(hh):(mm)</span></th>
@@ -1920,6 +1981,7 @@
             signOtApprove: "",
             description: "",
             remarks: "",
+            leaveType: "",
             type: "workday"
           });
         }
@@ -2072,8 +2134,11 @@
       activeRows.forEach((row, idx) => {
         const tr = document.createElement('tr');
 
-        if (row.type === 'weekend' || row.type === 'holiday') {
-          tr.className = row.type === 'holiday' ? 'holiday-row' : 'weekend-row';
+        if (row.type === 'weekend' || row.type === 'holiday' || row.type === 'sick-leave' || row.type === 'annual-leave') {
+          if (row.type === 'holiday') tr.className = 'holiday-row';
+          else if (row.type === 'sick-leave') tr.className = 'sick-leave-row';
+          else if (row.type === 'annual-leave') tr.className = 'annual-leave-row';
+          else tr.className = 'weekend-row';
 
           tr.innerHTML = `
             <td class="col-w-day">
@@ -2084,9 +2149,11 @@
               <input type="text" class="grid-input" style="font-weight:700; width:100%; text-align:center;" value="${row.mergedText || ''}" oninput="updateRowData(${idx}, 'mergedText', this.value)">
               <span class="print-only-val" style="font-weight:700;">${row.mergedText || ''}</span>
             </td>
-            <td class="col-w-action no-print">
-              <button type="button" class="btn-cell-del" onclick="deleteRow(${idx})" title="ลบแถว">✕</button>
-            </td>
+            ${row.type === 'sick-leave' || row.type === 'annual-leave' ? `
+              <td class="col-w-action no-print">
+                <button type="button" class="btn-leave btn-leave-undo" onclick="undoLeave(${idx})">undo</button>
+              </td>
+            ` : ''}
           `;
         } else {
           tr.className = 'workday-row';
@@ -2128,7 +2195,10 @@
               <span class="print-only-val">${row.remarks || ''}</span>
             </td>
             <td class="col-w-action no-print">
-              <button type="button" class="btn-cell-del" onclick="deleteRow(${idx})" title="ลบแถว">✕</button>
+              <div class="leave-btn-group">
+                <button type="button" class="btn-leave btn-leave-sick" onclick="applyLeave(${idx}, 'sick')">ลาป่วย</button>
+                <button type="button" class="btn-leave btn-leave-annual" onclick="applyLeave(${idx}, 'annual')">พักร้อน</button>
+              </div>
             </td>
           `;
         }
@@ -2179,6 +2249,48 @@
       showToast("ลบแถวเรียบร้อย");
     }
 
+    function applyLeave(index, leaveType) {
+      const row = activeRows[index];
+      if (!row) return;
+      // Save original workday data so undo can restore it
+      row._savedWorkday = {
+        timeIn: row.timeIn || '',
+        timeOut: row.timeOut || '',
+        signHead: row.signHead || '',
+        otStart: row.otStart || '',
+        otEnd: row.otEnd || '',
+        signOtApprove: row.signOtApprove || '',
+        description: row.description || '',
+        remarks: row.remarks || ''
+      };
+      const label = leaveType === 'sick' ? 'ลาป่วย' : 'ลาพักร้อน';
+      row.type = leaveType === 'sick' ? 'sick-leave' : 'annual-leave';
+      row.mergedText = label;
+      row.leaveType = leaveType;
+      renderGrid();
+      saveActiveMonthData(false);
+    }
+
+    function undoLeave(index) {
+      const row = activeRows[index];
+      if (!row) return;
+      const saved = row._savedWorkday || {};
+      row.type = 'workday';
+      row.timeIn = saved.timeIn || '';
+      row.timeOut = saved.timeOut || '';
+      row.signHead = saved.signHead || '';
+      row.otStart = saved.otStart || '';
+      row.otEnd = saved.otEnd || '';
+      row.signOtApprove = saved.signOtApprove || '';
+      row.description = saved.description || '';
+      row.remarks = saved.remarks || '';
+      row.leaveType = '';
+      row.mergedText = '';
+      delete row._savedWorkday;
+      renderGrid();
+      saveActiveMonthData(false);
+    }
+
     function addNewRow(type = 'workday') {
       const nextDay = activeRows.length ? Math.max(...activeRows.map(r => parseInt(r.day) || 0)) + 1 : 1;
       if (type === 'holiday') {
@@ -2198,6 +2310,7 @@
           signOtApprove: "",
           description: "",
           remarks: "",
+          leaveType: "",
           type: "workday"
         });
       }
@@ -2340,7 +2453,7 @@
       `;
 
       activeRows.forEach(row => {
-        if (row.type === 'weekend' || row.type === 'holiday') {
+        if (row.type === 'weekend' || row.type === 'holiday' || row.type === 'sick-leave' || row.type === 'annual-leave') {
           html += `
             <tr class="row-merged">
               <td class="col-text">${row.day}</td>
