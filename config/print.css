@@ -1,0 +1,233 @@
+/* Print layout with blank repeated page spacers. */
+@page {
+  size: A4 portrait;
+  margin: 0 !important;
+}
+
+@media print {
+  html, body {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .app-header, .tabs-wrapper, .calendar-card, .summary-panel, .quick-tools, .col-w-action, .no-print, .toast-container, .mobile-fab-save, .mobile-table-hint {
+    display: none !important;
+  }
+
+  .sheet-paper {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 10mm !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .summary-panel {
+    width: auto !important;
+    margin: 0 10mm 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .summary-table {
+    width: 82mm !important;
+    font-size: 10pt !important;
+  }
+
+  .summary-table th,
+  .summary-table td {
+    border: 0.5pt solid #444444 !important;
+    padding: 4px 7px !important;
+  }
+
+  .summary-table th {
+    background: #315b9a !important;
+    color: #ffffff !important;
+  }
+
+  .profile-info-grid {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 18px !important;
+  }
+
+  .field-line-input {
+    border-bottom: 1.5px solid #000 !important;
+    color: #000 !important;
+  }
+
+  .table-responsive {
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    margin-bottom: 8px !important;
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+  }
+
+  table.timesheet-grid {
+    border-collapse: collapse !important;
+    border: none !important;
+  }
+
+  table.timesheet-grid thead th.col-w-day,
+  table.timesheet-grid td.col-w-day {
+    position: static !important;
+    box-shadow: none !important;
+  }
+
+  table.timesheet-grid th, table.timesheet-grid td {
+    border: 1px solid #000 !important;
+    color: #000 !important;
+    padding: 5px 6px !important;
+  }
+
+  table.timesheet-grid thead th {
+    background-color: #f1f5f9 !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  table.timesheet-grid tbody tr,
+  table.timesheet-grid tbody tr > td {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  table.timesheet-grid tbody tr:last-child,
+  table.timesheet-grid #gridFinalTbody tr:first-child {
+    break-after: avoid-page !important;
+    page-break-after: avoid !important;
+  }
+
+  table.timesheet-grid tbody.print-final-group {
+    display: table-row-group !important;
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  table.timesheet-grid tr.print-final-combined-row,
+  table.timesheet-grid tr.print-final-combined-row > td {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  table.timesheet-grid .print-final-inner-grid {
+    width: 100% !important;
+    table-layout: fixed !important;
+    margin: 0 !important;
+  }
+
+  #gridTbody > tr:last-child {
+    display: none !important;
+  }
+
+  table.timesheet-grid #gridFinalRowBody tr {
+    break-inside: avoid-page !important;
+    page-break-inside: avoid !important;
+  }
+
+  table.timesheet-grid .signature-footer-cell {
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  table.timesheet-grid .print-page-top-spacer {
+    display: table-row !important;
+  }
+
+  table.timesheet-grid .print-page-top-spacer th {
+    height: 12mm !important;
+    padding: 0 !important;
+    border: none !important;
+    background: #ffffff !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  table.timesheet-grid tfoot.print-page-bottom-spacer {
+    display: table-footer-group !important;
+  }
+
+  table.timesheet-grid .print-page-bottom-spacer td {
+    height: 12mm !important;
+    padding: 0 !important;
+    border: none !important;
+    background: #ffffff !important;
+    font-size: 0 !important;
+    line-height: 0 !important;
+  }
+
+  .grid-input,
+  .grid-textarea {
+    display: none !important;
+  }
+
+  .print-only-val {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+    color: #000 !important;
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  .print-only-desc {
+    text-align: left !important;
+    padding: 2px 4px !important;
+  }
+
+  tr.weekend-row {
+    background-color: #f8fafc !important;
+  }
+
+  tr.holiday-row {
+    background-color: #fefce8 !important;
+  }
+
+  tr.sick-leave-row,
+  tr.annual-leave-row,
+  tr.personal-leave-row,
+  tr.other-leave-row {
+    background-color: #ffffff !important;
+  }
+
+  .sheet-signatures-section {
+    margin-top: 6mm !important;
+    padding: 6mm 20px 12mm !important;
+    break-before: avoid-page !important;
+    page-break-before: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .signature-block {
+    line-height: 1.5 !important;
+  }
+
+  .sig-dots-line {
+    height: 12mm !important;
+    margin: 0 12mm 2mm !important;
+    border-bottom: 1px solid #000 !important;
+    font-size: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  .screen-signatures {
+    display: none !important;
+  }
+
+  .print-signatures {
+    display: grid !important;
+  }
+
+  .sig-dots-line, .sig-date-dots {
+    color: #000 !important;
+  }
+}
